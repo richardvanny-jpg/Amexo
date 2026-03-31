@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amexo — Simulateur Miles 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#060D2E;--navy2:#0A1240;--navy3:#0F1850;
+  --blue:#1E90FF;--blue2:#4AABFF;--blue3:rgba(30,144,255,0.15);
+  --gold:#FFD700;--gold2:#FFC107;
+  --green:#22C55E;--green2:rgba(34,197,94,0.15);
+  --amber:#F59E0B;--amber2:rgba(245,158,11,0.15);
+  --red:#EF4444;
+  --white:#FFFFFF;--w90:rgba(255,255,255,0.9);--w60:rgba(255,255,255,0.6);--w30:rgba(255,255,255,0.3);--w10:rgba(255,255,255,0.08);
+  --border:rgba(255,255,255,0.1);--border-blue:rgba(30,144,255,0.35);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--navy);color:var(--w90);min-height:100vh;overflow-x:hidden}
+
+/* GRID BG */
+body::before{content:'';position:fixed;inset:0;
+  background-image:linear-gradient(rgba(30,144,255,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(30,144,255,0.035) 1px,transparent 1px);
+  background-size:48px 48px;pointer-events:none;z-index:0}
+
+.wrap{max-width:700px;margin:0 auto;padding:0 16px;position:relative;z-index:1}
+
+/* ===== HERO ===== */
+.hero{text-align:center;padding:56px 0 40px;border-bottom:1px solid var(--border)}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(30,144,255,0.12);border:1px solid var(--border-blue);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;color:var(--blue2);margin-bottom:20px;letter-spacing:.03em}
+.dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(42px,8vw,72px);font-weight:800;line-height:1;letter-spacing:-2px;color:var(--white);margin-bottom:10px}
+.hero h1 span{color:var(--blue)}
+.hero-sub{font-size:16px;color:var(--w60);margin-bottom:24px;font-weight:400}
+.hero-pills{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.pill{padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600;border:1px solid}
+.pill-blue{background:var(--blue);border-color:var(--blue);color:#fff}
+.pill-outline{background:transparent;border-color:var(--border-blue);color:var(--blue2)}
+.pill-ghost{background:transparent;border-color:var(--border);color:var(--w60)}
+
+/* ===== SOCIAL PROOF ===== */
+.proof{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:24px 0;border-bottom:1px solid var(--border)}
+.proof-box{text-align:center;padding:16px 10px;background:var(--navy2);border:1px solid var(--border);border-radius:12px}
+.proof-val{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:500;color:var(--blue);letter-spacing:-0.5px}
+.proof-val.gold{color:var(--gold)}
+.proof-label{font-size:11px;color:var(--w60);margin-top:4px}
+
+/* ===== SECTIONS ===== */
+.section{padding:28px 0;border-bottom:1px solid var(--border)}
+.sec-head{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.sec-num{width:26px;height:26px;background:var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+.sec-title{font-size:15px;font-weight:600;color:var(--white)}
+
+/* ===== INPUTS ===== */
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:11px;color:var(--w60);font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.field input,.field select{background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:11px 13px;font-size:14px;font-family:'Inter',sans-serif;font-weight:500;color:var(--white);transition:border-color .15s;outline:none;-webkit-appearance:none;appearance:none}
+.field input:focus,.field select:focus{border-color:var(--blue);background:rgba(30,144,255,0.07)}
+.field input:hover,.field select:hover{border-color:var(--border-blue)}
+.field select option{background:#0A1240}
+
+/* ===== CARD TOGGLES ===== */
+.card-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.ctog{border:1px solid var(--border);border-radius:12px;padding:14px;cursor:pointer;transition:all .15s;background:var(--navy2);position:relative;user-select:none}
+.ctog:hover{border-color:var(--border-blue)}
+.ctog.on{border-color:var(--blue);background:rgba(30,144,255,0.1)}
+.ctog-name{font-size:13px;font-weight:600;color:var(--white);margin-bottom:3px;padding-right:48px}
+.ctog-bonus{font-size:12px;color:var(--w60)}
+.ctog.on .ctog-bonus{color:var(--blue2)}
+.ctog-tag{position:absolute;top:10px;right:10px;font-size:10px;padding:2px 9px;border-radius:8px;font-weight:700;letter-spacing:.03em}
+.tag-free{background:var(--green2);color:var(--green)}
+.tag-up{background:var(--blue3);color:var(--blue2)}
+.ctog-check{position:absolute;bottom:10px;right:10px;width:18px;height:18px;background:var(--blue);border-radius:50%;display:none;align-items:center;justify-content:center;font-size:10px;color:#fff;font-weight:700}
+.ctog.on .ctog-check{display:flex}
+
+/* ===== HORIZON ===== */
+.hbtns{display:flex;gap:8px}
+.hbtn{padding:8px 22px;border:1px solid var(--border);border-radius:20px;background:transparent;color:var(--w60);font-size:13px;font-family:'Inter',sans-serif;font-weight:500;cursor:pointer;transition:all .15s}
+.hbtn.on{background:var(--blue);border-color:var(--blue);color:#fff}
+
+/* ===== CTA ===== */
+.btn-main{width:100%;padding:16px;background:var(--blue);border:none;border-radius:12px;font-size:15px;font-weight:700;font-family:'Inter',sans-serif;color:#fff;cursor:pointer;margin-top:24px;transition:all .15s;letter-spacing:.02em}
+.btn-main:hover{background:var(--blue2);transform:translateY(-1px)}
+.btn-main:active{transform:scale(.99)}
+
+/* ===== RESULTS ===== */
+.results{display:none}
+.results.on{display:block}
+.rs{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--w30);margin:24px 0 12px;display:flex;align-items:center;gap:8px}
+.rs::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* METRIC CARDS */
+.mrow{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px}
+.met{background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.met-l{font-size:10px;color:var(--w30);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px}
+.met-v{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:500;color:var(--blue);letter-spacing:-.5px}
+.met-v.gold{color:var(--gold)}
+.met-v.green{color:var(--green)}
+.met-s{font-size:11px;color:var(--w30);margin-top:2px}
+
+/* RESULT CARD */
+.rcard{background:var(--navy2);border:1px solid var(--border);border-radius:14px;margin-bottom:12px;overflow:hidden}
+.rcard-h{display:flex;justify-content:space-between;align-items:center;padding:13px 16px;border-bottom:1px solid var(--border)}
+.rcard-title{font-size:13px;font-weight:600;color:var(--white)}
+.rbadge{font-size:10px;padding:3px 9px;border-radius:8px;font-weight:700}
+.rrow{display:flex;justify-content:space-between;align-items:center;padding:8px 16px;border-bottom:1px solid rgba(255,255,255,0.04);font-size:12px}
+.rrow:last-child{border-bottom:none}
+.rrow-l{color:var(--w60)}
+.rrow-v{font-weight:600;color:var(--white);font-family:'JetBrains Mono',monospace;font-size:12px;text-align:right}
+.rrow-v.g{color:var(--green)}
+.rrow-v.b{color:var(--blue2)}
+.rrow-v.gold{color:var(--gold)}
+.rrow-v.am{color:var(--amber)}
+
+/* DESTINATIONS */
+.dest-item{display:grid;grid-template-columns:1fr 82px 105px;align-items:center;padding:9px 16px;border-bottom:1px solid rgba(255,255,255,0.04);font-size:12px;gap:8px}
+.dest-item:last-child{border-bottom:none}
+.dest-m{color:var(--w30);font-family:'JetBrains Mono',monospace;font-size:11px;text-align:right}
+.ds{font-size:11px;font-weight:700;text-align:right}
+.ds.ok{color:var(--green)}
+.ds.soon{color:var(--amber)}
+.ds.no{color:var(--w30)}
+
+/* HACKS */
+.hacks-grid{display:flex;flex-direction:column;gap:10px}
+.hack{background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start}
+.hack-icon{font-size:20px;flex-shrink:0;margin-top:1px}
+.hack-title{font-size:13px;font-weight:600;color:var(--white);margin-bottom:3px}
+.hack-text{font-size:12px;color:var(--w60);line-height:1.6}
+.hack-tag{display:inline-block;font-size:10px;padding:2px 8px;border-radius:6px;font-weight:700;margin-top:6px}
+.ht-gold{background:rgba(255,215,0,0.12);color:var(--gold)}
+.ht-blue{background:var(--blue3);color:var(--blue2)}
+.ht-green{background:var(--green2);color:var(--green)}
+
+/* PARTNERS */
+.partners-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.partner{background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:13px 15px}
+.partner-name{font-size:13px;font-weight:600;color:var(--white);margin-bottom:3px}
+.partner-detail{font-size:12px;color:var(--w60);line-height:1.5}
+.partner-bonus{font-size:11px;color:var(--blue2);font-weight:600;margin-top:5px}
+
+/* AVANTAGES */
+.av-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.av{background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:13px}
+.av-icon{font-size:18px;margin-bottom:6px}
+.av-l{font-size:10px;color:var(--w30);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+.av-v{font-size:16px;font-weight:700;color:var(--green);font-family:'JetBrains Mono',monospace}
+.av-s{font-size:10px;color:var(--w30);margin-top:2px}
+
+/* VERDICT */
+.verdict{background:linear-gradient(135deg,rgba(30,144,255,0.15),rgba(30,144,255,0.04));border:1px solid var(--border-blue);border-radius:14px;padding:20px}
+.verdict-hd{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.verdict-icon{width:32px;height:32px;background:var(--blue);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.verdict-title{font-size:14px;font-weight:700;color:var(--white)}
+.verdict-text{font-size:13px;color:var(--w60);line-height:1.75}
+.vh{color:var(--blue2);font-weight:600}
+
+/* PARRAIN */
+.parrain{background:var(--navy2);border:1px solid var(--border);border-radius:14px;padding:22px;text-align:center;margin-top:20px}
+.parrain-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--white);margin-bottom:6px}
+.parrain-sub{font-size:13px;color:var(--w60);margin-bottom:18px;line-height:1.6}
+.parrain-btns{display:flex;flex-direction:column;gap:8px;align-items:center}
+.pbtn{display:inline-block;padding:12px 28px;border-radius:10px;font-family:'Inter',sans-serif;font-weight:700;font-size:13px;text-decoration:none;transition:all .15s;width:100%;text-align:center}
+.pbtn-main{background:var(--blue);color:#fff}
+.pbtn-main:hover{background:var(--blue2)}
+.pbtn-sec{background:transparent;border:1px solid var(--border-blue);color:var(--blue2)}
+.pbtn-sec:hover{background:var(--blue3)}
+.parrain-warn{font-size:12px;color:var(--amber);font-weight:600;margin-top:12px}
+
+/* FOOTER */
+footer{padding:28px 0;text-align:center;border-top:1px solid var(--border);margin-top:40px}
+.footer-logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--w60);margin-bottom:4px}
+.footer-logo span{color:var(--blue)}
+.footer-sub{font-size:12px;color:var(--w30)}
+.footer-links{display:flex;justify-content:center;gap:20px;margin-top:10px}
+.footer-links a{font-size:12px;color:var(--w30);text-decoration:none}
+.footer-links a:hover{color:var(--blue2)}
+
+@media(max-width:480px){
+  .grid2,.card-grid,.av-grid,.partners-grid{grid-template-columns:1fr}
+  .mrow{grid-template-columns:1fr 1fr}
+  .proof{grid-template-columns:1fr}
+  .dest-item{grid-template-columns:1fr 95px}
+  .dest-m{display:none}
+  .hero h1{font-size:48px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge"><div class="dot"></div>Offre parrainage active — jusqu'au 8 juin 2026</div>
+  <h1>AMEX<span>O</span></h1>
+  <p class="hero-sub">Tes dépenses deviennent des voyages gratuits</p>
+  <div class="hero-pills">
+    <span class="pill pill-blue">✈ Flying Blue</span>
+    <span class="pill pill-outline">★ Miles</span>
+    <span class="pill pill-ghost">Amex</span>
+  </div>
+</div>
+
+<!-- PROOF -->
+<div class="proof">
+  <div class="proof-box"><div class="proof-val">25 000</div><div class="proof-label">Miles Gold AF offerts</div></div>
+  <div class="proof-box"><div class="proof-val">0 €</div><div class="proof-label">Coût an 1 via parrainage</div></div>
+  <div class="proof-box"><div class="proof-val gold">1 300+</div><div class="proof-label">Lounges Priority Pass</div></div>
+</div>
+
+<!-- FORM -->
+<div class="section">
+  <div class="sec-head"><div class="sec-num">1</div><span class="sec-title">Tes dépenses mensuelles</span></div>
+  <div class="grid2">
+    <div class="field"><label>Courses & supermarché</label><input type="number" id="f-courses" value="400" min="0" step="10"></div>
+    <div class="field"><label>Restos & sorties</label><input type="number" id="f-restos" value="200" min="0" step="10"></div>
+    <div class="field"><label>Carburant & transport</label><input type="number" id="f-transport" value="150" min="0" step="10"></div>
+    <div class="field"><label>Shopping & divers</label><input type="number" id="f-shopping" value="200" min="0" step="10"></div>
+    <div class="field"><label>Abonnements</label><input type="number" id="f-abos" value="100" min="0" step="10"></div>
+    <div class="field"><label>Hôtels Accor (×2 miles)</label><input type="number" id="f-hotels" value="0" min="0" step="10"></div>
+    <div class="field"><label>Uber (×2 miles si 4+/mois)</label><input type="number" id="f-uber" value="0" min="0" step="10"></div>
+    <div class="field"><label>Achats AF / KLM directs</label><input type="number" id="f-af" value="0" min="0" step="10"></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-head"><div class="sec-num">2</div><span class="sec-title">Tes vols par an</span></div>
+  <div class="grid2">
+    <div class="field"><label>Nombre de vols AF/KLM</label><input type="number" id="f-vols" value="4" min="0" max="50"></div>
+    <div class="field"><label>Type de vol majoritaire</label>
+      <select id="f-type">
+        <option value="court">Court courrier — Europe</option>
+        <option value="moyen" selected>Moyen courrier — Afrique, MO</option>
+        <option value="long">Long courrier — Amériques, Asie</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-head"><div class="sec-num">3</div><span class="sec-title">Carte(s) visée(s)</span></div>
+  <div class="card-grid">
+    <div class="ctog on" id="t-gaf" onclick="tog('gaf')">
+      <span class="ctog-tag tag-free">0 € an 1</span>
+      <div class="ctog-name">Gold Air France</div>
+      <div class="ctog-bonus">+25 000 miles offerts</div>
+      <div class="ctog-check">✓</div>
+    </div>
+    <div class="ctog on" id="t-gam" onclick="tog('gam')">
+      <span class="ctog-tag tag-free">0 € an 1</span>
+      <div class="ctog-name">Gold Amex classique</div>
+      <div class="ctog-bonus">Points MR flexibles</div>
+      <div class="ctog-check">✓</div>
+    </div>
+    <div class="ctog" id="t-paf" onclick="tog('paf')">
+      <span class="ctog-tag tag-up">Upgrade</span>
+      <div class="ctog-name">Platinum Air France</div>
+      <div class="ctog-bonus">+40 000 miles à l'upgrade</div>
+      <div class="ctog-check">✓</div>
+    </div>
+    <div class="ctog" id="t-pam" onclick="tog('pam')">
+      <span class="ctog-tag tag-up">Upgrade</span>
+      <div class="ctog-name">Platinum Amex</div>
+      <div class="ctog-bonus">+80 000 pts à l'upgrade</div>
+      <div class="ctog-check">✓</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-head"><div class="sec-num">4</div><span class="sec-title">Horizon</span></div>
+  <div class="hbtns">
+    <button class="hbtn on" id="h1" onclick="setH(1)">1 an</button>
+    <button class="hbtn" id="h2" onclick="setH(2)">2 ans</button>
+    <button class="hbtn" id="h3" onclick="setH(3)">3 ans</button>
+  </div>
+</div>
+
+<button class="btn-main" onclick="calc()">✈ Calculer ma simulation complète</button>
+
+<!-- RESULTS -->
+<div class="results" id="results">
+
+  <div class="rs">Vue d'ensemble</div>
+  <div class="mrow">
+    <div class="met"><div class="met-l">Dépenses / mois</div><div class="met-v" id="r-dep">—</div></div>
+    <div class="met"><div class="met-l">Miles / mois</div><div class="met-v gold" id="r-mm">—</div></div>
+    <div class="met"><div class="met-l">Total miles <span id="r-hl">an 1</span></div><div class="met-v gold" id="r-tot">—</div></div>
+    <div class="met"><div class="met-l">Valeur estimée</div><div class="met-v green" id="r-val">—</div><div class="met-s">à 0,015 €/mile</div></div>
+  </div>
+
+  <!-- GOLD AF -->
+  <div id="b-gaf" style="display:none">
+    <div class="rs">Gold Air France — détail complet</div>
+    <div class="rcard">
+      <div class="rcard-h"><span class="rcard-title">Amex Gold Air France (0 € an 1)</span><span class="rbadge" style="background:rgba(34,197,94,.15);color:#22C55E">Gratuite an 1</span></div>
+      <div class="rrow"><span class="rrow-l">Bonus bienvenue parrainage</span><span class="rrow-v g">+25 000 miles</span></div>
+      <div class="rrow"><span class="rrow-l">Miles dépenses quotidiennes</span><span class="rrow-v b" id="gaf-dep">—</span></div>
+      <div class="rrow"><span class="rrow-l">Miles Uber (×2 si 4+ courses/mois)</span><span class="rrow-v b" id="gaf-uber">—</span></div>
+      <div class="rrow"><span class="rrow-l">Miles Accor Hotels (double cumul)</span><span class="rrow-v b" id="gaf-hotel">—</span></div>
+      <div class="rrow"><span class="rrow-l">Miles achats AF/KLM directs</span><span class="rrow-v b" id="gaf-af">—</span></div>
+      <div class="rrow"><span class="rrow-l">Miles vols AF/KLM</span><span class="rrow-v" id="gaf-vols">—</span></div>
+      <div class="rrow"><span class="rrow-l">Total miles</span><span class="rrow-v gold" id="gaf-tot">—</span></div>
+      <div class="rrow"><span class="rrow-l">Valeur estimée totale</span><span class="rrow-v g" id="gaf-val">—</span></div>
+      <div class="rrow"><span class="rrow-l">Bagages soute gratuits (court/moyen courrier)</span><span class="rrow-v g" id="gaf-bag">—</span></div>
+      <div class="rrow"><span class="rrow-l">Assurance voyage (train inclus 2026)</span><span class="rrow-v">jusqu'à 7 000 €</span></div>
+      <div class="rrow"><span class="rrow-l">Assurance médicale à l'étranger</span><span class="rrow-v">Incluse</span></div>
+      <div class="rrow"><span class="rrow-l">Paiement 3× sans frais sur billets AF/KLM</span><span class="rrow-v g">Inclus</span></div>
+      <div class="rrow"><span class="rrow-l">XP Flying Blue / an (barème 2026)</span><span class="rrow-v b" id="gaf-xp">10 XP + jusqu'à 40 XP</span></div>
+      <div class="rrow"><span class="rrow-l">Accès prioritaire Accor Arena & PSG</span><span class="rrow-v g">Inclus</span></div>
+      <div class="rrow"><span class="rrow-l">Accès prioritaire billets F1 2026</span><span class="rrow-v g">Inclus</span></div>
+      <div class="rrow"><span class="rrow-l">Service client 24h/24 7j/7</span><span class="rrow-v">Inclus</span></div>
+      <div class="rrow"><span class="rrow-l">Cotisation an 1</span><span class="rrow-v g">0 € (parrainage)</span></div>
+      <div class="rrow"><span class="rrow-l">Cotisation an 2+</span><span class="rrow-v">195 €/an</span></div>
+    </div>
+  </div>
+
+  <!-- GOLD AMEX -->
+  <div id="b-gam" style="display:none">
+    <div class="rs">Gold Amex classique — détail complet</div>
+    <div class="rcard">
+      <div class="rcard-h"><span class="rcard-title">Amex Gold (0 € an 1)</span><span class="rbadge" style="background:rgba(34,197,94,.15);color:#22C55E">Gratuite an 1</span></div>
+      <div class="rrow"><span class="rrow-l">Bonus bienvenue</span><span class="rrow-v g">Points MR offerts</span></div>
+      <div class="rrow"><span class="rrow-l">Points MR cumulés</span><span class="rrow-v b" id="gam-pts">—</span></div>
+      <div class="rrow"><span class="rrow-l">Transfert vers Flying Blue (taux 1:1)</span><span class="rrow-v gold" id="gam-fb">—</span></div>
+      <div class="rrow"><span class="rrow-l">Bonus transfert Amex → Flying Blue (+25%)</span><span class="rrow-v g">Offres ponctuelles</span></div>
+      <div class="rrow"><span class="rrow-l">Valeur estimée</span><span class="rrow-v g" id="gam-val">—</span></div>
+      <div class="rrow"><span class="rrow-l">Flexibilité (15+ programmes)</span><span class="rrow-v b">Flying Blue, Marriott, Hilton…</span></div>
+      <div class="rrow"><span class="rrow-l">Assurances voyage</span><span class="rrow-v">Incluses</span></div>
+      <div class="rrow"><span class="rrow-l">Cotisation an 1</span><span class="rrow-v g">0 € (parrainage)</span></div>
+      <div class="rrow"><span class="rrow-l">Cotisation an 2+</span><span class="rrow-v">195 €/an</span></div>
+    </div>
+  </div>
+
+  <!-- PLAT AF -->
+  <div id="b-paf" style="display:none">
+    <div class="rs">Platinum Air France — détail complet</div>
+    <div class="rcard">
+      <div class="rcard-h"><span class="rcard-title">Amex Platinum Air France</span><span class="rbadge" style="background:rgba(30,144,255,.15);color:#4AABFF">Upgrade</span></div>
+      <div class="rrow"><span class="rrow-l">Bonus upgrade</span><span class="rrow-v g">+40 000 miles</span></div>
+      <div class="rrow"><span class="rrow-l">Miles cumulés total</span><span class="rrow-v gold" id="paf-tot">—</span></div>
+      <div class="rrow"><span class="rrow-l">Valeur estimée</span><span class="rrow-v g" id="paf-val">—</span></div>
+      <div class="rrow"><span class="rrow-l">Priority Pass (1 300+ lounges)</span><span class="rrow-v g">Illimité</span></div>
+      <div class="rrow"><span class="rrow-l">Valeur lounges (<span id="paf-vn">0</span> vols × 30 €)</span><span class="rrow-v g" id="paf-lv">—</span></div>
+      <div class="rrow"><span class="rrow-l">Package Flying Blue Extra Essentiel</span><span class="rrow-v g">Offert / an</span></div>
+      <div class="rrow"><span class="rrow-l">Loge panoramique Accor Arena</span><span class="rrow-v g">Inclus</span></div>
+      <div class="rrow"><span class="rrow-l">Loge privatisée Stade de France</span><span class="rrow-v g">Inclus</span></div>
+      <div class="rrow"><span class="rrow-l">Accès prioritaire PSG & F1 2026</span><span class="rrow-v g">Inclus</span></div>
+      <div class="rrow"><span class="rrow-l">Assurance annulation</span><span class="rrow-v">jusqu'à 10 000 €</span></div>
+      <div class="rrow"><span class="rrow-l">Assurance médicale à l'étranger</span><span class="rrow-v">Incluse</span></div>
+      <div class="rrow"><span class="rrow-l">XP Flying Blue / an</span><span class="rrow-v b">+40 XP (statut accéléré)</span></div>
+      <div class="rrow"><span class="rrow-l">Platinum for 2 (statut partagé)</span><span class="rrow-v">1 proche inclus</span></div>
+      <div class="rrow"><span class="rrow-l">Conciergerie 24h/24</span><span class="rrow-v">Inclus</span></div>
+      <div class="rrow"><span class="rrow-l">Cotisation</span><span class="rrow-v">535 €/an</span></div>
+      <div class="rrow"><span class="rrow-l">Rentabilité estimée</span><span class="rrow-v" id="paf-rent">—</span></div>
+    </div>
+  </div>
+
+  <!-- PLAT AMEX -->
+  <div id="b-pam" style="display:none">
+    <div class="rs">Platinum Amex classique — détail complet</div>
+    <div class="rcard">
+      <div class="rcard-h"><span class="rcard-title">Amex Platinum</span><span class="rbadge" style="background:rgba(30,144,255,.15);color:#4AABFF">Upgrade</span></div>
+      <div class="rrow"><span class="rrow-l">Bonus upgrade</span><span class="rrow-v g">+80 000 pts MR</span></div>
+      <div class="rrow"><span class="rrow-l">Valeur bonus upgrade seul</span><span class="rrow-v g">~1 200 €</span></div>
+      <div class="rrow"><span class="rrow-l">Points MR total cumulés</span><span class="rrow-v b" id="pam-pts">—</span></div>
+      <div class="rrow"><span class="rrow-l">Priority Pass illimité (1 700+ lounges)</span><span class="rrow-v g">Inclus</span></div>
+      <div class="rrow"><span class="rrow-l">Valeur lounges (<span id="pam-vn">0</span> vols × 30 €)</span><span class="rrow-v g" id="pam-lv">—</span></div>
+      <div class="rrow"><span class="rrow-l">Crédit dining annuel</span><span class="rrow-v g">200 €/an</span></div>
+      <div class="rrow"><span class="rrow-l">Assurances voyage premium</span><span class="rrow-v">Incluses</span></div>
+      <div class="rrow"><span class="rrow-l">Conciergerie dédiée 24h/24</span><span class="rrow-v">Inclus</span></div>
+      <div class="rrow"><span class="rrow-l">Cotisation</span><span class="rrow-v">840 €/an</span></div>
+      <div class="rrow"><span class="rrow-l">Rentabilité estimée</span><span class="rrow-v" id="pam-rent">—</span></div>
+    </div>
+  </div>
+
+  <!-- DESTINATIONS -->
+  <div class="rs">Destinations accessibles avec tes miles</div>
+  <div class="rcard"><div id="dest-list"></div></div>
+
+  <!-- AVANTAGES CONCRETS -->
+  <div class="rs">Avantages financiers concrets / an</div>
+  <div class="av-grid">
+    <div class="av"><div class="av-icon">🧳</div><div class="av-l">Bagages</div><div class="av-v" id="av-bag">—</div><div class="av-s">45 €/bagage × vols</div></div>
+    <div class="av"><div class="av-icon">🛡️</div><div class="av-l">Assurance</div><div class="av-v" id="av-ass">—</div><div class="av-s">couverture annulation</div></div>
+    <div class="av"><div class="av-icon">🛋️</div><div class="av-l">Lounges</div><div class="av-v" id="av-lg">—</div><div class="av-s">~30 €/accès Plat.</div></div>
+    <div class="av"><div class="av-icon">💳</div><div class="av-l">Pmt 3× AF</div><div class="av-v g">Inclus</div><div class="av-s">sans frais Gold+</div></div>
+    <div class="av"><div class="av-icon">⚡</div><div class="av-l">Pay w/ Miles</div><div class="av-v b" id="av-pwm">—</div><div class="av-s">1 000 m = 4 € sur billets</div></div>
+    <div class="av"><div class="av-icon">📅</div><div class="av-l">Miles validité</div><div class="av-v g">+2 ans</div><div class="av-s">prolongée chaque achat</div></div>
+  </div>
+
+  <!-- HACKS & ASTUCES -->
+  <div class="rs">Hacks & astuces 2026 — les moves de pro</div>
+  <div class="hacks-grid">
+    <div class="hack">
+      <div class="hack-icon">🔥</div>
+      <div>
+        <div class="hack-title">Double dipping Accor + Amex</div>
+        <div class="hack-text">Lie ton compte Flying Blue à ton compte Accor Live Limitless (ALL). Tu cumules à la fois des points Accor ET des miles Flying Blue sur chaque nuit d'hôtel — et en plus tu paies avec ta carte Amex pour encore plus de miles. Triple cumul sur un seul séjour.</div>
+        <span class="hack-tag ht-gold">🏆 Move premium</span>
+      </div>
+    </div>
+    <div class="hack">
+      <div class="hack-icon">🚗</div>
+      <div>
+        <div class="hack-title">Uber × Flying Blue : le bonus des 4 courses</div>
+        <div class="hack-text">Lie ton compte Uber à Flying Blue. Tu gagnes 1 mile/€ sur chaque course. Mais à partir de 4 courses dans le mois, le taux passe à 2 miles/€ automatiquement. Et si tu paies avec ta carte Amex, tu cumules en plus les miles de ta carte. Double compteur.</div>
+        <span class="hack-tag ht-blue">💡 Astuce quotidienne</span>
+      </div>
+    </div>
+    <div class="hack">
+      <div class="hack-icon">🛒</div>
+      <div>
+        <div class="hack-title">Flying Blue Shop for Miles</div>
+        <div class="hack-text">Le portail shopping Flying Blue te donne des miles sur tes achats en ligne (Apple, Nike, Fnac...). Si tu paies avec ta carte Amex en plus, tu cumules les miles du portail ET les miles de ta carte. Ex : 100 € chez Nike = 220 miles portail + 150 miles carte = 370 miles total.</div>
+        <span class="hack-tag ht-green">✅ Facile à activer</span>
+      </div>
+    </div>
+    <div class="hack">
+      <div class="hack-icon">📅</div>
+      <div>
+        <div class="hack-title">Promo Rewards Flying Blue — chaque 1er du mois</div>
+        <div class="hack-text">Chaque mois, Flying Blue publie des vols à -25% à -50% en miles. Mars 2026 : Paris → New York dès 18 750 miles (au lieu de 25 000). Si tu attends les promos, tes miles valent 30 à 50% de plus. C'est la différence entre 1 vol et 1,5 vol avec le même solde.</div>
+        <span class="hack-tag ht-gold">🗓️ Vérifier le 1er du mois</span>
+      </div>
+    </div>
+    <div class="hack">
+      <div class="hack-icon">✈️</div>
+      <div>
+        <div class="hack-title">Stopover gratuit Paris ou Amsterdam</div>
+        <div class="hack-text">Flying Blue permet d'ajouter un stopover gratuit sur les vols AF/KLM. Tu pars de Paris vers Tokyo, tu peux t'arrêter 2 semaines à Amsterdam sans surcoût en miles. Un seul billet = deux destinations. Un hack peu connu qui double la valeur de chaque vol miles.</div>
+        <span class="hack-tag ht-gold">🏆 Move premium</span>
+      </div>
+    </div>
+    <div class="hack">
+      <div class="hack-icon">💸</div>
+      <div>
+        <div class="hack-title">Transfert Amex → Flying Blue avec bonus +25%</div>
+        <div class="hack-text">Amex propose régulièrement des bonus de transfert de points MR vers Flying Blue. Au lieu de 1 000 pts = 1 000 miles, tu obtiens 1 000 pts = 1 250 miles. Ces offres sont éphémères (quelques jours) mais permettent de booster ton solde sans dépenser plus.</div>
+        <span class="hack-tag ht-blue">⚡ Offres éphémères</span>
+      </div>
+    </div>
+    <div class="hack">
+      <div class="hack-icon">🎫</div>
+      <div>
+        <div class="hack-title">Pay with Miles sur billets + taxes</div>
+        <div class="hack-text">Depuis 2026, Pay with Miles permet de rembourser non seulement le prix du billet mais aussi les taxes d'aéroport. 1 000 miles = 4 €, applicable sur l'intégralité de ta réservation AF/KLM. Sur un billet Paris-NYC à 600 €, il te faut 150 000 miles pour couvrir le tout.</div>
+        <span class="hack-tag ht-green">✅ Nouveau 2026</span>
+      </div>
+    </div>
+    <div class="hack">
+      <div class="hack-icon">🏨</div>
+      <div>
+        <div class="hack-title">Booking.com × Flying Blue</div>
+        <div class="hack-text">Réserve tes hôtels via Booking.com en tant que membre Flying Blue : 2 miles par euro sur chaque réservation + minimum 15% de réduction sur une sélection d'hôtels. Combine ça avec le paiement Amex et tu cumules sur toute la réservation.</div>
+        <span class="hack-tag ht-green">✅ Facile à activer</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTENAIRES -->
+  <div class="rs">Tous les partenaires Flying Blue 2026</div>
+  <div class="partners-grid">
+    <div class="partner"><div class="partner-name">✈️ Air France & KLM</div><div class="partner-detail">Miles sur chaque vol selon le tarif. Vols courts : 500–1 500 miles. Long-courrier : 3 000–8 000 miles.</div><div class="partner-bonus">Taux : 4 à 9 miles/€ billet</div></div>
+    <div class="partner"><div class="partner-name">🏨 Accor Live Limitless</div><div class="partner-detail">Double cumul Accor points + miles FB sur chaque nuit dans les 5 500+ hôtels Accor (ibis, Novotel, Pullman, Sofitel...)</div><div class="partner-bonus">~1 mile/10 € + points Accor</div></div>
+    <div class="partner"><div class="partner-name">🚗 Uber</div><div class="partner-detail">1 mile/€ par course, 2 miles/€ à partir de 4 courses dans le mois. Lie ton compte sur flyingblue.com</div><div class="partner-bonus">Jusqu'à 2 miles/€</div></div>
+    <div class="partner"><div class="partner-name">🏨 Booking.com</div><div class="partner-detail">2 miles/€ sur toutes tes réservations d'hôtels. +15% de réduction sur sélection d'hôtels partenaires.</div><div class="partner-bonus">2 miles/€ + réduction</div></div>
+    <div class="partner"><div class="partner-name">🚗 Hertz</div><div class="partner-detail">Miles sur toutes tes locations de voiture Hertz dans le monde. Taux variable selon pays et durée.</div><div class="partner-bonus">Partenaire officiel AF</div></div>
+    <div class="partner"><div class="partner-name">🛒 Flying Blue Shop</div><div class="partner-detail">Portail shopping : Apple, Nike, Fnac, Amazon, H&M... Miles sur chaque achat en ligne.</div><div class="partner-bonus">1 à 5+ miles/€ selon enseigne</div></div>
+    <div class="partner"><div class="partner-name">🏨 Marriott Bonvoy</div><div class="partner-detail">Transfert de points Marriott vers Flying Blue. 3 points Marriott = 1 mile Flying Blue.</div><div class="partner-bonus">Taux de transfert : 3:1</div></div>
+    <div class="partner"><div class="partner-name">🏨 Hilton Honors</div><div class="partner-detail">Transfert points Hilton vers miles Flying Blue via les partenaires de transfert Amex MR.</div><div class="partner-bonus">Via points MR Amex</div></div>
+    <div class="partner"><div class="partner-name">💊 Allianz</div><div class="partner-detail">Assurances voyage Allianz partenaire Flying Blue. Miles cumulés sur certaines souscriptions.</div><div class="partner-bonus">Partenaire finance FB</div></div>
+    <div class="partner"><div class="partner-name">💳 Revolut</div><div class="partner-detail">Partenaire financier Flying Blue. Certaines offres permettent de cumuler des miles via Revolut.</div><div class="partner-bonus">Partenaire finance FB</div></div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="rs">Verdict personnalisé</div>
+  <div id="verdict-box"></div>
+
+  <!-- PARRAINAGE CTA -->
+  <div class="parrain">
+    <div class="parrain-title">Prêt à commencer ? 🃏</div>
+    <p class="parrain-sub">Utilise le lien Amexo pour activer ton bonus de bienvenue.<br>Accompagnement offert pour optimiser tes miles dès le 1er mois.</p>
+    <div class="parrain-btns">
+      <a href="https://americanexpress.com" class="pbtn pbtn-main" target="_blank">✈ Souscrire Gold Air France — 0 € an 1</a>
+      <a href="https://americanexpress.com" class="pbtn pbtn-sec" target="_blank">Souscrire Gold Amex classique — 0 € an 1</a>
+    </div>
+    <p class="parrain-warn">⚠️ Offre parrainage valable jusqu'au 8 juin 2026 uniquement</p>
+  </div>
+
+</div><!-- /results -->
+
+<footer>
+  <div class="footer-logo">AMEX<span>O</span></div>
+  <div class="footer-sub">Miles & Voyages · @Amexo_fr sur X</div>
+  <div class="footer-links">
+    <a href="https://twitter.com/Amexo_fr" target="_blank">X / Twitter</a>
+    <a href="#">Mentions légales</a>
+  </div>
+</footer>
+
+</div><!-- /wrap -->
+
+<script>
+const S={gaf:true,gam:true,paf:false,pam:false};
+let H=1;
+function tog(id){S[id]=!S[id];document.getElementById('t-'+id).classList.toggle('on',S[id])}
+function setH(n){H=n;[1,2,3].forEach(i=>document.getElementById('h'+i).classList.toggle('on',i===n))}
+const fm=n=>Math.round(n).toLocaleString('fr-FR');
+const fme=n=>Math.round(n).toLocaleString('fr-FR')+' €';
+
+function calc(){
+  const courses=+document.getElementById('f-courses').value||0;
+  const restos=+document.getElementById('f-restos').value||0;
+  const transport=+document.getElementById('f-transport').value||0;
+  const shopping=+document.getElementById('f-shopping').value||0;
+  const abos=+document.getElementById('f-abos').value||0;
+  const hotels=+document.getElementById('f-hotels').value||0;
+  const uber=+document.getElementById('f-uber').value||0;
+  const af=+document.getElementById('f-af').value||0;
+  const vols=+document.getElementById('f-vols').value||0;
+  const tv=document.getElementById('f-type').value;
+
+  const baseDepenses=courses+restos+transport+shopping+abos;
+  const totalMois=baseDepenses+hotels+uber+af;
+
+  // Miles par mois — barème 2026 : 0.5 mile/€ standard, 1 mile/€ partenaires AF/KLM
+  const milesBase=baseDepenses*0.5;
+  const milesHotel=hotels*1.0; // Accor partenaire = 1 mile/€
+  const milesUber=uber*2.0; // Uber 2 miles/€ si actif
+  const milesAF=af*1.0; // AF/KLM direct = 1 mile/€
+  const milesMois=milesBase+milesHotel+milesUber+milesAF;
+
+  const volMap={court:500,moyen:2000,long:5000};
+  const milesVols=vols*volMap[tv]*H;
+  const milesCumul=(milesMois*12*H)+milesVols;
+
+  const bestTotal=Math.max(
+    S.gaf?milesCumul+25000:0,
+    S.paf?milesCumul+40000:0,
+    milesCumul
+  );
+
+  // Vue d'ensemble
+  document.getElementById('r-dep').textContent=fme(totalMois);
+  document.getElementById('r-mm').textContent=fm(milesMois);
+  document.getElementById('r-tot').textContent=fm(bestTotal);
+  document.getElementById('r-val').textContent=fme(bestTotal*0.015);
+  document.getElementById('r-hl').textContent=H===1?'an 1':H+' ans';
+
+  ['gaf','gam','paf','pam'].forEach(id=>document.getElementById('b-'+id).style.display=S[id]?'block':'none');
+
+  if(S.gaf){
+    const tot=milesCumul+25000;
+    document.getElementById('gaf-dep').textContent=fm(milesBase*12*H)+' miles';
+    document.getElementById('gaf-uber').textContent=fm(milesUber*12*H)+' miles';
+    document.getElementById('gaf-hotel').textContent=fm(milesHotel*12*H)+' miles';
+    document.getElementById('gaf-af').textContent=fm(milesAF*12*H)+' miles';
+    document.getElementById('gaf-vols').textContent=fm(milesVols)+' miles';
+    document.getElementById('gaf-tot').textContent=fm(tot)+' miles';
+    document.getElementById('gaf-val').textContent=fme(tot*0.015);
+    document.getElementById('gaf-bag').textContent=fme(vols*45)+'/an économisés';
+    const xp=10+Math.floor((totalMois*12)/5000)*5;
+    document.getElementById('gaf-xp').textContent='10 XP + ~'+Math.min(xp-10,30)+' XP (dépenses)';
+  }
+  if(S.gam){
+    const pts=totalMois*12*H;
+    document.getElementById('gam-pts').textContent=fm(pts)+' pts MR';
+    document.getElementById('gam-fb').textContent=fm(pts)+' miles (taux 1:1)';
+    document.getElementById('gam-val').textContent=fme(pts*0.015);
+  }
+  if(S.paf){
+    const tot=milesCumul+40000;
+    const lv=vols*30;
+    document.getElementById('paf-tot').textContent=fm(tot)+' miles';
+    document.getElementById('paf-val').textContent=fme(tot*0.015);
+    document.getElementById('paf-vn').textContent=vols;
+    document.getElementById('paf-lv').textContent=fme(lv)+'/an';
+    const valeurTotale=tot*0.015+lv+(vols*45);
+    const ok=valeurTotale>535;
+    document.getElementById('paf-rent').textContent=ok?'Rentable ✓ (valeur ~'+fme(valeurTotale)+')':'Rentable dès ~3 000 €/mois';
+    document.getElementById('paf-rent').className='rrow-v '+(ok?'g':'am');
+  }
+  if(S.pam){
+    const pts=(totalMois*12*H)+80000;
+    const lv=vols*30;
+    document.getElementById('pam-pts').textContent=fm(pts)+' pts MR';
+    document.getElementById('pam-vn').textContent=vols;
+    document.getElementById('pam-lv').textContent=fme(lv)+'/an';
+    const valeurTotale=(pts*0.015)+lv+200;
+    const ok=valeurTotale>840;
+    document.getElementById('pam-rent').textContent=ok?'Rentable ✓ (valeur ~'+fme(valeurTotale)+')':'Rentable dès ~4 000 €/mois';
+    document.getElementById('pam-rent').className='rrow-v '+(ok?'g':'am');
+  }
+
+  // Destinations
+  const dests=[
+    {n:'Paris → Bordeaux A/R',f:'🇫🇷',m:5000},
+    {n:'Paris → Barcelone A/R',f:'🇪🇸',m:8000},
+    {n:'Paris → Rome A/R',f:'🇮🇹',m:10000},
+    {n:'Paris → Casablanca A/R',f:'🇲🇦',m:12000},
+    {n:'Paris → Marrakech A/R',f:'🇲🇦',m:15000},
+    {n:'Paris → Dakar A/R',f:'🇸🇳',m:22000},
+    {n:'Paris → New York A/R',f:'🇺🇸',m:25000},
+    {n:'Paris → New York A/R (Promo -25%)',f:'🇺🇸',m:18750},
+    {n:'Paris → Montréal A/R',f:'🇨🇦',m:30000},
+    {n:'Paris → Miami A/R',f:'🇺🇸',m:32000},
+    {n:'Paris → Bangkok A/R',f:'🇹🇭',m:40000},
+    {n:'Paris → Tokyo A/R',f:'🇯🇵',m:45000},
+    {n:'Paris → Los Angeles A/R',f:'🇺🇸',m:50000},
+    {n:'Upgrade Business court courrier',f:'💺',m:15000},
+    {n:'Upgrade Business long courrier',f:'💺',m:40000},
+  ];
+  let html='';
+  dests.forEach(d=>{
+    let cls,txt;
+    if(bestTotal>=d.m){cls='ok';txt='Accessible ✓';}
+    else{
+      const mo=Math.ceil((d.m-bestTotal)/milesMois);
+      if(mo<=18){cls='soon';txt='Dans ~'+mo+' mois';}
+      else{cls='no';txt='Plus tard';}
+    }
+    html+=`<div class="dest-item"><span>${d.f} ${d.n}</span><span class="dest-m">${fm(d.m)} miles</span><span class="ds ${cls}">${txt}</span></div>`;
+  });
+  document.getElementById('dest-list').innerHTML=html;
+
+  // Avantages
+  document.getElementById('av-bag').textContent=fme(vols*45);
+  document.getElementById('av-ass').textContent=fme(S.paf||S.pam?10000:S.gaf?7000:0);
+  document.getElementById('av-lg').textContent=(S.paf||S.pam)?fme(vols*30)+'/an':'Gold uniquement';
+  document.getElementById('av-pwm').textContent=fm(bestTotal*4/1000)+' €';
+
+  // Verdict
+  let vt='';
+  if(totalMois<800)vt=`Avec <span class="vh">${fme(totalMois)}/mois</span>, commence par les <span class="vh">Gold AF + Gold Amex gratuites</span>. Tu génères ~<span class="vh">${fm(milesMois*12+25000)} miles la 1ère année</span> pour 0 € de cotisation. Active Uber + Flying Blue et le portail shopping pour maximiser sans rien changer. Le Platinum devient pertinent à partir de 3 000 €/mois.`;
+  else if(totalMois<2000)vt=`Profil idéal pour le <span class="vh">combo Gold AF + Gold Amex</span> (0 € les deux, jusqu'au 8 juin). Tu génères <span class="vh">${fm(milesMois*12+25000)} miles la 1ère année</span>. Active le double dipping Accor et Uber pour pousser encore plus. Upgrade Platinum Air France dans 12 mois si tu prends 4+ vols/an.`;
+  else if(totalMois<4000)vt=`Avec <span class="vh">${fme(totalMois)}/mois</span>, tu es dans la cible <span class="vh">Platinum Air France</span>. Bonus 40 000 miles à l'upgrade + <span class="vh">${fm(milesMois*12+40000)} miles dès l'upgrade</span>. Les lounges (${fme(vols*30)}/an) + bagages (${fme(vols*45)}/an) + assurances couvrent une grande partie de la cotisation. Commence par la Gold (0 €), upgrade dans 12 mois.`;
+  else vt=`Profil <span class="vh">Platinum AF + Platinum Amex</span>. Avec <span class="vh">${fme(totalMois)}/mois</span> les deux cartes se remboursent largement. ${fm(milesMois*12)} miles/an + 40k AF + 80k Amex = valeur estimée <span class="vh">${fme((milesCumul+120000)*0.015)}</span> sur la période. C'est le <span class="vh">combo ultime</span> — active tous les partenaires pour maximiser.`;
+
+  document.getElementById('verdict-box').innerHTML=`<div class="verdict"><div class="verdict-hd"><div class="verdict-icon">🃏</div><div class="verdict-title">Verdict pour ton profil</div></div><p class="verdict-text">${vt}</p></div>`;
+
+  document.getElementById('results').classList.add('on');
+  setTimeout(()=>document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'}),80);
+}
+</script>
+</body>
+</html>
