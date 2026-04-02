@@ -428,6 +428,7 @@ footer{padding:24px 0;text-align:center;border-top:1px solid var(--border);margi
         <button class="pcbtn" onclick="changeParr(1,'pgaf')">+</button>
       </div>
     </div>
+    <div style="padding:2px 16px;font-size:10px;color:var(--w30)">40 000 miles/filleul + bonus 40 000 si 2+ filleuls</div>
     <div class="parr-input-row">
       <span class="parr-label">Nombre de proches que tu penses parrainer (Gold Amex)</span>
       <div class="parr-counter">
@@ -436,6 +437,7 @@ footer{padding:24px 0;text-align:center;border-top:1px solid var(--border);margi
         <button class="pcbtn" onclick="changeParr(1,'pgam')">+</button>
       </div>
     </div>
+    <div style="padding:2px 16px 8px;font-size:10px;color:var(--w30)">60 000 pts MR/filleul + bonus 60 000 si 2+ filleuls (= valeur de 3)</div>
     <div class="parr-results" id="parr-results">
       <div class="parr-result-row"><span class="prl">Miles parrainage Gold AF (×filleuls)</span><span class="prv" id="pr-gaf">—</span></div>
       <div class="parr-result-row"><span class="prl">Points parrainage Gold Amex (×filleuls)</span><span class="prv" id="pr-gam">—</span></div>
@@ -455,8 +457,8 @@ footer{padding:24px 0;text-align:center;border-top:1px solid var(--border);margi
     <div id="parr-highlight" style="padding:12px 16px;background:rgba(34,197,94,0.06);border-top:1px solid rgba(34,197,94,0.15)">
       <div style="font-size:12px;color:#22C55E;font-weight:700;line-height:1.7">Bonus actuels (jusqu'au 8 juin 2026) :</div>
       <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.7;margin-top:4px">
-        → Air France : <strong style="color:#FFD700">25 000 miles/filleul</strong> + 40 000 si upgrade Plat = jusqu'à <strong style="color:#22C55E">120 000 miles pour 2 filleuls</strong><br>
-        → Amex : <strong style="color:#A78BFA">180 000 pts MR</strong> soit <strong style="color:#22C55E">144 000 miles</strong> (ratio 5:4) pour les filleuls<br>
+        → Air France : <strong style="color:#FFD700">40 000 miles/filleul</strong> + bonus 40k si 2+ = <strong style="color:#22C55E">120 000 miles pour 2 filleuls</strong><br>
+        → Amex : <strong style="color:#A78BFA">60 000 pts MR/filleul</strong> + bonus 60k si 2+ = <strong style="color:#22C55E">180 000 pts MR (144 000 miles)</strong><br>
         → Combiné : assez pour un <strong style="color:#fff">A/R Business Tokyo + A/R Business New York</strong>
       </div>
     </div>
@@ -739,15 +741,16 @@ function convertMiles(pts,prog){
 
 function updateParr(){
   var pgaf=parrState.pgaf, pgam=parrState.pgam;
-  var mGAF=pgaf*25000;
-  var ptsGAM=pgam*12000;
-  var total=pgaf+pgam;
+  // AF: 40 000 miles/filleul + bonus 40 000 si 2+ filleuls = 120k pour 2
+  var mGAF=pgaf*40000+(pgaf>=2?40000:0);
+  // Amex: 60 000 pts MR/filleul + bonus 60 000 si 2+ filleuls = 180k pour 2
+  var ptsGAM=pgam*60000+(pgam>=2?60000:0);
   document.getElementById('pr-gaf').textContent=fm(mGAF)+' miles';
   document.getElementById('pr-gam').textContent=fm(ptsGAM)+' pts MR (~'+fm(Math.round(ptsGAM*0.8))+' miles FB)';
-  document.getElementById('pr-bonus').textContent=total>=2?'Bonus additionnel declenche (montant variable — voir app Amex)':'Non atteint (2+ filleuls requis)';
+  document.getElementById('pr-bonus').textContent=(pgaf>=2||pgam>=2)?'Bonus 2+ filleuls activé (+40k miles AF / +60k pts Amex)':'Non atteint (2+ filleuls requis)';
   var totEq=mGAF+Math.round(ptsGAM*0.8);
-  document.getElementById('pr-tot').textContent=fm(totEq)+' miles equivalents';
-  document.getElementById('pr-val').textContent=fme(totEq*0.015)+' estimee';
+  document.getElementById('pr-tot').textContent=fm(totEq)+' miles équivalents';
+  document.getElementById('pr-val').textContent=fme(Math.round(totEq*0.015))+' (éco) → '+fme(Math.round(totEq*0.05))+' (business)';
   window._parrMiles=mGAF;
   window._parrPts=ptsGAM;
 }
@@ -959,7 +962,8 @@ function calc(){
   buildRoadmap(totalMois,totalVols);
 
   // VERDICT
-  buildVerdict(totalMois,totalFB,milesMois,milesAF,gamToFB,pamToFB,parrMiles+parrPtsConv,totalOther,valTotal,S,H,vcourt+vmoyen+vlong,milesCumul);
+  var ptsRestantsCalc=(S.gam&&!gamConvert?gamPtsCumul:0)+(S.pam&&!pamConvert?pamPtsCumul:0);
+  buildVerdict(totalMois,totalFB,milesMois,milesAF,gamToFB,pamToFB,parrMiles+parrPtsConv,totalOther,valTotal,S,H,vcourt+vmoyen+vlong,milesCumul,ptsRestantsCalc);
 
   // Speech bubble
   var msgs=[
@@ -1007,7 +1011,7 @@ function buildRoadmap(totalMois,totalVols){
   document.getElementById('roadmap-content').innerHTML=h;
 }
 
-function buildVerdict(totalMois,totalFB,milesMois,milesAF,gamToFB,pamToFB,parrFB,otherMiles,valTotal,cards,horizon,totalVols,milesCumul){
+function buildVerdict(totalMois,totalFB,milesMois,milesAF,gamToFB,pamToFB,parrFB,otherMiles,valTotal,cards,horizon,totalVols,milesCumul,ptsRestantsParam){
   var fromMR=gamToFB+pamToFB;
   var fromParr=parrFB;
   var valEstim=Math.round(totalFB*0.015);
@@ -1177,7 +1181,7 @@ function buildVerdict(totalMois,totalFB,milesMois,milesAF,gamToFB,pamToFB,parrFB
   var roiNote='<br><span style="color:'+(roiNet>=0?'#22C55E':'#F59E0B')+'">→ ROI net sur la période : '+(roiNet>=0?'+':'')+fme(roiNet)+'.</span>';
 
   // Détection points MR non convertis pour recommandation
-  var ptsRestants=(cards.gam&&!gamConvert?gamPtsCumul:0)+(cards.pam&&!pamConvert?pamPtsCumul:0);
+  var ptsRestants=ptsRestantsParam||0;
   var mrRecoHtml='';
   if(ptsRestants>0){
     var milesPotentiels=Math.round(ptsRestants*0.8);
