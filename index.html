@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Amexo — Simulateur Ultimate 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" crossorigin="anonymous"></script>
 <style>
 :root{
   --navy:#060D2E;--navy2:#0A1240;--navy3:#0F1850;
@@ -18,9 +19,11 @@
   --border:rgba(255,255,255,.09);--border-blue:rgba(30,144,255,.35);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:'Inter',sans-serif;background:var(--navy);color:var(--w90);min-height:100vh;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(30,144,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(30,144,255,.03) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:'Inter',sans-serif;background:var(--navy);color:var(--w90);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+/* Twemoji: render all emoji as high-quality images */
+img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em;display:inline-block}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(30,144,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(30,144,255,.02) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0;will-change:auto}
 .W{max-width:720px;margin:0 auto;padding:0 16px;position:relative;z-index:1}
 
 /* ===== ANIMATIONS ===== */
@@ -28,7 +31,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes slidein{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-@keyframes glow{0%,100%{box-shadow:0 0 0 0 rgba(30,144,255,0)}50%{box-shadow:0 0 20px 4px rgba(30,144,255,.25)}}
+.results.on{display:block;animation:slidein .5s cubic-bezier(0.23,1,0.32,1)}@keyframes glow{0%,100%{box-shadow:0 0 0 0 rgba(30,144,255,0)}50%{box-shadow:0 0 20px 4px rgba(30,144,255,.25)}}
 @keyframes trail{0%{opacity:0;transform:translateX(-10px)}50%{opacity:1}100%{opacity:0;transform:translateX(40px)}}
 @keyframes bounce{0%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}60%{transform:translateY(-3px)}}
 
@@ -48,7 +51,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
 /* CTA HERO */
 .hero-ctas{display:flex;flex-direction:column;gap:8px;max-width:400px;margin:0 auto}
-.hcta{display:block;padding:13px 20px;border-radius:12px;font-family:'Inter',sans-serif;font-weight:700;font-size:13px;text-decoration:none;text-align:center;transition:all .15s}
+.hcta{display:block;padding:13px 20px;border-radius:12px;font-family:'Inter',sans-serif;font-weight:700;font-size:13px;text-decoration:none;text-align:center;transition:all .2s ease;-webkit-tap-highlight-color:transparent}
 .hcta-main{background:var(--blue);color:#fff}
 .hcta-main:hover{background:var(--blue2);transform:translateY(-1px)}
 .hcta-sec{background:transparent;border:1px solid var(--border-blue);color:var(--blue2)}
@@ -83,16 +86,16 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .field{display:flex;flex-direction:column;gap:5px}
 .field label{font-size:11px;color:var(--w60);font-weight:600;text-transform:uppercase;letter-spacing:.06em}
-.field input,.field select{background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-size:14px;font-family:'Inter',sans-serif;font-weight:500;color:#fff;transition:border-color .15s;outline:none;-webkit-appearance:none;appearance:none}
+.field input,.field select{background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-size:16px;font-family:'Inter',sans-serif;font-weight:500;color:#fff;transition:border-color .2s ease,background .2s ease;outline:none;-webkit-appearance:none;appearance:none}
 .field input:focus,.field select:focus{border-color:var(--blue);background:rgba(30,144,255,.07)}
 .field select option{background:#0A1240}
 .field-note{font-size:10px;color:var(--w30);margin-top:3px}
 
 /* ===== CARD TOGGLES ===== */
 .ctgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.ct{border:1px solid var(--border);border-radius:12px;padding:14px;cursor:pointer;transition:all .15s;background:var(--navy2);position:relative;user-select:none}
+.ct{border:1px solid var(--border);border-radius:12px;padding:14px;cursor:pointer;transition:all .2s ease;background:var(--navy2);position:relative;user-select:none;-webkit-tap-highlight-color:transparent}
 .ct:hover{border-color:var(--border-blue)}
-.ct.on{border-color:var(--blue);background:rgba(30,144,255,.1);animation:glow 3s infinite}
+.ct.on{border-color:var(--blue);background:rgba(30,144,255,.1);box-shadow:0 0 16px 2px rgba(30,144,255,.15)}
 .ct-name{font-size:13px;font-weight:600;color:#fff;margin-bottom:2px;padding-right:50px}
 .ct-bonus{font-size:11px;color:var(--w60)}
 .ct.on .ct-bonus{color:var(--blue2)}
@@ -108,13 +111,12 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .tbtn.on{background:var(--blue);border-color:var(--blue);color:#fff}
 
 /* ===== CTA CALC ===== */
-.btn-calc{width:100%;padding:15px;background:var(--blue);border:none;border-radius:12px;font-size:15px;font-weight:700;font-family:'Inter',sans-serif;color:#fff;cursor:pointer;margin-top:22px;transition:all .15s;letter-spacing:.02em;position:relative;overflow:hidden}
+.btn-calc{width:100%;padding:15px;background:var(--blue);border:none;border-radius:12px;font-size:15px;font-weight:700;font-family:'Inter',sans-serif;color:#fff;cursor:pointer;margin-top:22px;transition:all .2s ease;letter-spacing:.02em;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent}
 .btn-calc:hover{background:var(--blue2);transform:translateY(-1px)}
 .btn-calc:active{transform:scale(.99)}
 
 /* ===== RESULTS ===== */
 .results{display:none}
-.results.on{display:block;animation:slidein .4s ease}
 .rs{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--w30);margin:22px 0 12px;display:flex;align-items:center;gap:8px}
 .rs::after{content:'';flex:1;height:1px;background:var(--border)}
 
@@ -280,13 +282,24 @@ footer{padding:24px 0;text-align:center;border-top:1px solid var(--border);margi
 .flinks a:hover{color:var(--blue2)}
 
 @media(max-width:520px){
-  .g2,.ctgrid,.avgrid{grid-template-columns:1fr}
+  .g2,.ctgrid{grid-template-columns:1fr}
+  .avgrid{grid-template-columns:repeat(2,1fr)}
   .mrow{grid-template-columns:1fr 1fr}
   .proof{grid-template-columns:repeat(2,1fr)}
   .conv-grid{grid-template-columns:1fr}
-  .dest-item{grid-template-columns:1fr 90px}
-  .dm{display:none}
+  .dest-item{grid-template-columns:1fr auto auto;gap:6px}
+  .dest-item span:first-child{white-space:normal;word-break:break-word}
+  .dm{font-size:10px}
   .hero-logo{font-size:52px}
+  .rrow{flex-wrap:wrap;gap:4px}
+  .rl{flex:1;min-width:0}
+  .rv{white-space:nowrap}
+  .hack{flex-direction:column;gap:8px}
+  .parr-input-row{flex-direction:column;align-items:flex-start;gap:8px}
+  .parr-counter{align-self:flex-end}
+  .val-row{flex-direction:column;align-items:flex-start;gap:4px}
+  .W{padding:0 12px}
+  .section{padding:20px 0}
 }
 </style>
 </head>
@@ -912,7 +925,10 @@ function calc(){
   document.getElementById('speech-text').textContent=msgs[Math.floor(Math.random()*msgs.length)];
 
   document.getElementById('results').classList.add('on');
-  setTimeout(function(){document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});},80);
+  setTimeout(function(){
+    document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+    if(window.twemoji){twemoji.parse(document.getElementById('results'),{folder:'svg',ext:'.svg',base:'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/'});}
+  },80);
 }
 
 function buildRoadmap(totalMois,totalVols){
@@ -1164,15 +1180,29 @@ function buildVerdict(totalMois,totalFB,milesMois,milesAF,gamToFB,pamToFB,parrFB
     +'<p class="v-text" style="margin-top:4px">'+vtxt+'</p>'
     +'<div class="v-steps" style="margin-top:14px">'+stepsHtml+'</div>'
     +'</div>';
+  if(window.twemoji){twemoji.parse(document.getElementById('verdict-box'),{folder:'svg',ext:'.svg',base:'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/'});}
 }
 
 
 // Init
 updateParr();
 
-// Animation avion
+// Parse all emoji to Twemoji images
+if(window.twemoji){twemoji.parse(document.body,{folder:'svg',ext:'.svg',base:'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/'});}
+
+// Animation avion (smoother with requestAnimationFrame)
 var plane=document.querySelector('.hero-plane');
-if(plane){var px=-10;setInterval(function(){px=(px+1.5)%120;plane.style.left=px+'%';plane.style.top=(28+Math.sin(px/18)*8)+'px';plane.style.opacity=px<5||px>110?'0':'0.35';},50);}
+if(plane){
+  var px=-10;
+  function animPlane(){
+    px=(px+0.4)%120;
+    plane.style.left=px+'%';
+    plane.style.top=(28+Math.sin(px/18)*8)+'px';
+    plane.style.opacity=px<5||px>110?'0':'0.3';
+    requestAnimationFrame(animPlane);
+  }
+  requestAnimationFrame(animPlane);
+}
 
 
 </script>
