@@ -300,7 +300,80 @@ footer{padding:24px 0;text-align:center;border-top:1px solid var(--border);margi
   .val-row{flex-direction:column;align-items:flex-start;gap:4px}
   .W{padding:0 12px}
   .section{padding:20px 0}
+  .dest-explore{grid-template-columns:1fr !important}
+  .be-grid{grid-template-columns:1fr !important}
+  .profile-grid{grid-template-columns:1fr !important}
+  .chart-row{grid-template-columns:1fr !important}
+  .tip-grid{grid-template-columns:1fr !important}
 }
+
+/* ===== DESTINATION EXPLORER ===== */
+.dest-explore{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.dcard{border-radius:14px;overflow:hidden;border:1px solid var(--border);cursor:pointer;transition:all .2s ease;background:var(--navy2);position:relative;-webkit-tap-highlight-color:transparent}
+.dcard:hover{border-color:var(--border-blue);transform:translateY(-2px)}
+.dcard.selected{border-color:var(--blue);box-shadow:0 0 20px rgba(30,144,255,.2)}
+.dcard-img{width:100%;height:100px;object-fit:cover;display:block}
+.dcard-body{padding:10px 12px}
+.dcard-city{font-size:14px;font-weight:700;color:#fff;margin-bottom:2px}
+.dcard-route{font-size:10px;color:var(--w30)}
+.dcard-prices{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+.dcard-price{background:rgba(0,0,0,.2);border-radius:8px;padding:6px 8px}
+.dcard-price-label{font-size:9px;color:var(--w30);text-transform:uppercase;letter-spacing:.05em}
+.dcard-price-val{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:500}
+.dcard-status{display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.04)}
+.dcard-badge{font-size:10px;padding:2px 8px;border-radius:6px;font-weight:700}
+.dcard-detail{display:none;padding:10px 12px;border-top:1px solid var(--border);background:rgba(0,0,0,.15)}
+.dcard.selected .dcard-detail{display:block}
+
+/* ===== CHART AREA ===== */
+.chart-container{background:var(--navy2);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px;overflow:hidden}
+.chart-title{font-size:12px;font-weight:700;color:var(--w90);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.chart-canvas{width:100%;border-radius:8px}
+.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chart-legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
+.chart-legend-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--w60)}
+.chart-legend-dot{width:8px;height:8px;border-radius:2px}
+
+/* ===== BREAK-EVEN ===== */
+.be-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.be-card{background:var(--navy2);border:1px solid var(--border);border-radius:14px;padding:16px;position:relative;overflow:hidden}
+.be-card.profitable{border-color:rgba(34,197,94,.3)}
+.be-card.not-yet{border-color:rgba(245,158,11,.2)}
+.be-name{font-size:13px;font-weight:700;color:#fff;margin-bottom:10px}
+.be-bar-bg{height:10px;background:rgba(255,255,255,.06);border-radius:5px;overflow:hidden;margin:6px 0}
+.be-bar-fill{height:100%;border-radius:5px;transition:width .8s ease}
+.be-row{display:flex;justify-content:space-between;font-size:11px;padding:3px 0}
+.be-label{color:var(--w60)}
+.be-val{font-family:'JetBrains Mono',monospace;font-weight:500}
+
+/* ===== PROFILE CARD ===== */
+.profile-card{background:linear-gradient(135deg,rgba(30,144,255,.15),rgba(167,139,250,.08));border:1px solid var(--border-blue);border-radius:16px;padding:20px;margin-bottom:14px}
+.profile-type{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+.profile-name{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:#fff;margin-bottom:4px}
+.profile-desc{font-size:12px;color:var(--w60);line-height:1.6;margin-bottom:14px}
+.profile-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.profile-stat{background:rgba(0,0,0,.25);border-radius:10px;padding:10px;text-align:center}
+.profile-stat-val{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700}
+.profile-stat-label{font-size:9px;color:var(--w30);margin-top:2px;text-transform:uppercase;letter-spacing:.04em}
+
+/* ===== TIPS ENHANCED ===== */
+.tip-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.tip-card{background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:14px;transition:all .2s}
+.tip-card:hover{border-color:var(--border-blue)}
+.tip-icon{font-size:24px;margin-bottom:8px}
+.tip-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:4px}
+.tip-text{font-size:11px;color:var(--w60);line-height:1.6}
+.tip-value{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-top:6px}
+
+/* ===== TIMELINE ===== */
+.timeline{position:relative;padding-left:24px}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--border)}
+.tl-item{position:relative;padding:12px 0 12px 16px;border-bottom:1px solid rgba(255,255,255,.03)}
+.tl-item:last-child{border-bottom:none}
+.tl-dot{position:absolute;left:-20px;top:16px;width:12px;height:12px;border-radius:50%;border:2px solid}
+.tl-month{font-size:10px;font-weight:700;color:var(--w30);text-transform:uppercase;letter-spacing:.08em}
+.tl-event{font-size:12px;color:var(--w90);margin-top:3px;line-height:1.5}
+.tl-miles{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;margin-top:3px}
 </style>
 </head>
 <body>
@@ -626,6 +699,59 @@ footer{padding:24px 0;text-align:center;border-top:1px solid var(--border);margi
     <div id="dest-list"></div>
   </div>
 
+  <!-- ═══════ NEW: DESTINATION EXPLORER ═══════ -->
+  <div class="rs">Explore tes destinations — clique pour simuler</div>
+  <div class="dest-explore" id="dest-explore"></div>
+  <div id="dest-selected-detail"></div>
+
+  <!-- ═══════ NEW: CHARTS DASHBOARD ═══════ -->
+  <div class="rs">Dashboard — Graphiques & analyses</div>
+  <div class="chart-row">
+    <div class="chart-container">
+      <div class="chart-title">Accumulation de miles dans le temps</div>
+      <canvas id="chart-accum" class="chart-canvas" height="200"></canvas>
+      <div class="chart-legend">
+        <div class="chart-legend-item"><div class="chart-legend-dot" style="background:#1E90FF"></div>Miles AF</div>
+        <div class="chart-legend-item"><div class="chart-legend-dot" style="background:#A78BFA"></div>+ MR convertis</div>
+        <div class="chart-legend-item"><div class="chart-legend-dot" style="background:#22C55E"></div>+ Parrainage</div>
+      </div>
+    </div>
+    <div class="chart-container">
+      <div class="chart-title">Valeur selon l'utilisation</div>
+      <canvas id="chart-value" class="chart-canvas" height="200"></canvas>
+      <div class="chart-legend">
+        <div class="chart-legend-item"><div class="chart-legend-dot" style="background:#EF4444"></div>Pay w/ Miles</div>
+        <div class="chart-legend-item"><div class="chart-legend-dot" style="background:#F59E0B"></div>Economy</div>
+        <div class="chart-legend-item"><div class="chart-legend-dot" style="background:#22C55E"></div>Business</div>
+        <div class="chart-legend-item"><div class="chart-legend-dot" style="background:#A78BFA"></div>Biz Promo</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ NEW: BREAK-EVEN ANALYSIS ═══════ -->
+  <div class="rs">Seuil de rentabilité par carte</div>
+  <div class="be-grid" id="be-grid"></div>
+
+  <!-- ═══════ NEW: PROFIL VOYAGEUR ═══════ -->
+  <div class="rs">Ton profil voyageur</div>
+  <div id="profile-box"></div>
+
+  <!-- ═══════ NEW: TIMELINE ACCUMULATION ═══════ -->
+  <div class="rs">Timeline — mois par mois</div>
+  <div class="rcard" style="padding:12px 16px">
+    <div class="timeline" id="timeline-box"></div>
+  </div>
+
+  <!-- ═══════ NEW: VALEUR MILES DETAILLEE ═══════ -->
+  <div class="rs">Simulateur de valeur — destination au choix</div>
+  <div class="rcard" style="padding:16px">
+    <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+      <select id="val-dest-select" onchange="updateValSim()" style="flex:1;min-width:180px;background:var(--navy3);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-size:14px;font-family:'Inter',sans-serif;color:#fff;outline:none;-webkit-appearance:none">
+      </select>
+    </div>
+    <div id="val-sim-result"></div>
+  </div>
+
   <!-- AVANTAGES CONCRETS -->
   <div class="rs">Avantages financiers concrets / an</div>
   <div class="avgrid">
@@ -651,6 +777,10 @@ footer{padding:24px 0;text-align:center;border-top:1px solid var(--border);margi
   <div class="hack"><div class="hi">🛋️</div><div><div class="ht">Priority Pass — rentabiliser en 2 accès</div><div class="hd">Avec le Platinum (AF ou Amex), tu as Priority Pass illimité. Un accès lounge = ~30 €. Dès 2 vols avec escale tu économises 120 € (2 allers, 2 retours). Avec 4+ vols/an c'est 240-360 € d'accès lounges gratuits — repas, boissons, douches, wifi. Ça couvre une grosse partie de la cotisation Platinum.</div><span class="htag htb">💡 Concret</span></div></div>
   <div class="hack"><div class="hi">🍽️</div><div><div class="ht">Crédit dining Platinum Amex — 200 €/an</div><div class="hd">Le Platinum Amex offre 200 € de crédit annuel dans les restaurants partenaires. Tu vas au resto normalement, tu paies avec ta Platinum, et 200 € sont crédités sur ton relevé. Ça couvre 24% de la cotisation à 840 € — sans rien changer à tes habitudes.</div><span class="htag hte">✅ Automatique</span></div></div>
   <div class="hack"><div class="hi">🏅</div><div><div class="ht">Statut Gold Hilton + Marriott offert</div><div class="hd">Avec le Platinum Amex, tu reçois automatiquement le statut Gold chez Hilton (chambre upgrade, late checkout) ET Marriott Bonvoy Gold (surclassement, 25% de points bonus). Valeur estimée : 300-500 €/an si tu fais 3+ nuits d'hôtel. Sans aucune nuit qualifiante requise.</div><span class="htag htp">🔮 Avantage caché</span></div></div>
+
+  <!-- ═══════ NEW: TIPS VALEUR PAR CATÉGORIE ═══════ -->
+  <div class="rs">Valeur concrète par avantage — chiffres réels</div>
+  <div class="tip-grid" id="tip-grid"></div>
 
   <!-- ROADMAP -->
   <div class="rs">🗓️ Ton plan d'action — jalons & dates clés</div>
@@ -726,6 +856,12 @@ function twimg(key,size){
   var code=EMOJIS[key];
   if(!code) return '';
   return '<img src="'+TWBASE+code+'.svg" alt="" style="width:'+size+'px;height:'+size+'px;vertical-align:-2px;display:inline-block">';
+}
+// roundRect polyfill for Safari <16
+if(!CanvasRenderingContext2D.prototype.roundRect){
+  CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){
+    r=Math.min(r||0,w/2,h/2);this.moveTo(x+r,y);this.arcTo(x+w,y,x+w,y+h,r);this.arcTo(x+w,y+h,x,y+h,r);this.arcTo(x,y+h,x,y,r);this.arcTo(x,y,x+w,y,r);this.closePath();
+  };
 }
 
 function tog(id){S[id]=!S[id];document.getElementById('t-'+id).classList.toggle('on',S[id]);}
@@ -974,6 +1110,9 @@ function calc(){
   document.getElementById('speech-text').textContent=msgs[Math.floor(Math.random()*msgs.length)];
 
   document.getElementById('results').classList.add('on');
+  // Build all dashboard sections
+  var mrToFBTotal=gamToFB+pamToFB;
+  postCalcDashboard(totalFB,milesMois,milesAF,mrToFBTotal,parrMiles+parrPtsConv,totalMois,{gaf:S.gaf,gam:S.gam,paf:S.paf,pam:S.pam},H,totalVols);
   setTimeout(function(){
     document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
     if(window.twemoji){twemoji.parse(document.getElementById('results'),{folder:'svg',ext:'.svg',base:'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/'});}
@@ -1376,6 +1515,357 @@ function buildVerdict(totalMois,totalFB,milesMois,milesAF,gamToFB,pamToFB,parrFB
 
 // Init
 updateParr();
+
+// ═══════ MASTER DESTINATIONS DATABASE ═══════
+var ALLDEST=[
+  {name:'Bordeaux',flag:'fr',route:'Paris → Bordeaux A/R',mEco:5000,pEco:120,img:'https://images.unsplash.com/photo-1559593323-28eb93240f82?w=400&q=75',zone:'France'},
+  {name:'Barcelone',flag:'es',route:'Paris → Barcelone A/R',mEco:8000,pEco:140,img:'https://images.unsplash.com/photo-1583422409516-2895a77efded?w=400&q=75',zone:'Europe'},
+  {name:'Rome',flag:'it',route:'Paris → Rome A/R',mEco:10000,pEco:160,img:'https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=400&q=75',zone:'Europe'},
+  {name:'Lisbonne',flag:'pt',route:'Paris → Lisbonne A/R',mEco:10000,pEco:130,img:'https://images.unsplash.com/photo-1585208798174-6cedd86e019a?w=400&q=75',zone:'Europe'},
+  {name:'Athènes',flag:'gr',route:'Paris → Athènes A/R',mEco:12500,pEco:190,img:'https://images.unsplash.com/photo-1555993539-1732b0258235?w=400&q=75',zone:'Europe'},
+  {name:'Marrakech',flag:'ma',route:'Paris → Marrakech A/R',mEco:15000,pEco:280,img:'https://images.unsplash.com/photo-1597212618440-806262de4f6b?w=400&q=75',zone:'Afrique'},
+  {name:'Dakar',flag:'sn',route:'Paris → Dakar A/R',mEco:22000,pEco:420,img:'https://images.unsplash.com/photo-1605893516102-710af736e1cc?w=400&q=75',zone:'Afrique'},
+  {name:'New York',flag:'us',route:'Paris → New York A/R',mEco:25000,mBiz:60000,pEco:620,pBiz:3800,img:'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=400&q=75',zone:'Amérique',dream:true,promo:18750},
+  {name:'Dubaï',flag:'ae',route:'Paris → Dubaï A/R',mEco:28000,mBiz:55000,pEco:580,pBiz:3200,img:'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=400&q=75',zone:'Moyen-Orient'},
+  {name:'Montréal',flag:'ca',route:'Paris → Montréal A/R',mEco:30000,pEco:650,img:'https://images.unsplash.com/photo-1519178614-68673b201f36?w=400&q=75',zone:'Amérique'},
+  {name:'Miami',flag:'us',route:'Paris → Miami A/R',mEco:32000,pEco:750,img:'https://images.unsplash.com/photo-1533106497176-45ae19e68ba2?w=400&q=75',zone:'Amérique'},
+  {name:'Bangkok',flag:'th',route:'Paris → Bangkok A/R',mEco:40000,mBiz:80000,pEco:520,pBiz:3500,img:'https://images.unsplash.com/photo-1508009603885-50cf7c579365?w=400&q=75',zone:'Asie',dream:true},
+  {name:'Tokyo',flag:'jp',route:'Paris → Tokyo A/R',mEco:45000,mBiz:80000,pEco:1100,pBiz:5500,img:'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400&q=75',zone:'Asie',dream:true},
+  {name:'Bali',flag:'id',route:'Paris → Bali A/R',mEco:48000,mBiz:85000,pEco:1050,pBiz:5200,img:'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=400&q=75',zone:'Asie',dream:true},
+  {name:'Los Angeles',flag:'us',route:'Paris → Los Angeles A/R',mEco:50000,mBiz:90000,pEco:980,pBiz:5000,img:'https://images.unsplash.com/photo-1534190760961-74e8c1c5c3da?w=400&q=75',zone:'Amérique',dream:true},
+  {name:'Le Cap',flag:'za',route:'Paris → Le Cap A/R',mEco:35000,mBiz:87500,pEco:580,pBiz:4000,img:'https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=400&q=75',zone:'Afrique',dream:true},
+  {name:'Séoul',flag:'kr',route:'Paris → Séoul A/R',mEco:37500,mBiz:92500,pEco:620,pBiz:4800,img:'https://images.unsplash.com/photo-1534274988757-a28bf1a57c17?w=400&q=75',zone:'Asie',dream:true},
+  {name:'Sydney',flag:'au',route:'Paris → Sydney A/R',mEco:45000,mBiz:115000,pEco:900,pBiz:6200,img:'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=400&q=75',zone:'Océanie',dream:true},
+];
+var selectedDestIdx=-1;
+var _lastTotalFB=0;var _lastMilesMois=0;var _lastTotalMois=0;var _lastCards={};var _lastH=1;var _lastTotalVols=0;
+
+// ═══════ DESTINATION EXPLORER ═══════
+function buildDestExplorer(totalFB,milesMois){
+  var el=document.getElementById('dest-explore');if(!el)return;
+  var html='';
+  ALLDEST.forEach(function(d,i){
+    var canEco=totalFB>=d.mEco;
+    var canBiz=d.mBiz&&totalFB>=d.mBiz;
+    var canPromo=d.promo&&totalFB>=d.promo;
+    var moEco=canEco?0:Math.ceil((d.mEco-totalFB)/Math.max(1,milesMois));
+    var statusTxt=canBiz?'Business ✓':canEco?'Economy ✓':canPromo?'Promo ✓':'~'+moEco+' mois';
+    var statusColor=canBiz?'#A78BFA':canEco||canPromo?'#22C55E':'#F59E0B';
+    var statusBg=canBiz?'rgba(167,139,250,.15)':canEco||canPromo?'rgba(34,197,94,.12)':'rgba(245,158,11,.12)';
+    var valPerMile=d.pEco/d.mEco;
+    var valBizPerMile=d.pBiz&&d.mBiz?(d.pBiz/d.mBiz):0;
+    var isSelected=selectedDestIdx===i;
+    html+='<div class="dcard'+(isSelected?' selected':'')+'" onclick="selectDest('+i+')" style="opacity:'+(canEco||canPromo?'1':'0.6')+'">'
+      +'<img class="dcard-img" src="'+d.img+'" alt="'+d.name+'" loading="lazy">'
+      +'<div class="dcard-body">'
+      +'<div style="display:flex;justify-content:space-between;align-items:center">'
+      +'<div class="dcard-city">'+twimg(d.flag,16)+' '+d.name+'</div>'
+      +'<div class="dcard-badge" style="background:'+statusBg+';color:'+statusColor+'">'+statusTxt+'</div>'
+      +'</div>'
+      +'<div class="dcard-route">'+d.route+'</div>'
+      +'<div class="dcard-prices">'
+      +'<div class="dcard-price"><div class="dcard-price-label">Economy</div><div class="dcard-price-val" style="color:'+(canEco?'#FFD700':'var(--w30)')+'">'+fm(d.mEco)+' mi</div></div>'
+      +(d.mBiz?'<div class="dcard-price"><div class="dcard-price-label">Business</div><div class="dcard-price-val" style="color:'+(canBiz?'#A78BFA':'var(--w30)')+'">'+fm(d.mBiz)+' mi</div></div>':'<div class="dcard-price"><div class="dcard-price-label">Prix cash</div><div class="dcard-price-val" style="color:var(--w60)">'+fme(d.pEco)+'</div></div>')
+      +'</div>'
+      +'</div>'
+      // Detail panel
+      +'<div class="dcard-detail">'
+      +'<div style="font-size:11px;color:var(--w60);line-height:1.7">'
+      +'<strong style="color:#fff">Analyse détaillée :</strong><br>'
+      +'→ Prix cash Eco : <strong>'+fme(d.pEco)+'</strong> · en miles : <strong style="color:#FFD700">'+fm(d.mEco)+' miles</strong> · valeur/mile : <strong style="color:#22C55E">'+valPerMile.toFixed(3)+' €</strong><br>'
+      +(d.mBiz?'→ Prix cash Biz : <strong>'+fme(d.pBiz)+'</strong> · en miles : <strong style="color:#A78BFA">'+fm(d.mBiz)+' miles</strong> · valeur/mile : <strong style="color:#22C55E">'+valBizPerMile.toFixed(3)+' €</strong><br>':'')
+      +(d.promo?'→ '+twimg('fire')+' Promo Rewards -25% : <strong style="color:#FFD700">'+fm(d.promo)+' miles</strong> (val/mile : <strong style="color:#22C55E">'+(d.pEco/d.promo).toFixed(3)+' €</strong>)<br>':'')
+      +'→ Économie vs achat cash : <strong style="color:#22C55E">'+fme(canBiz?(d.pBiz||d.pEco):d.pEco)+' économisés</strong><br>'
+      +(!canEco&&!canPromo?'→ Il te manque <strong style="color:#F59E0B">'+fm(d.mEco-totalFB)+' miles</strong> · ~'+moEco+' mois à ton rythme actuel':'→ <strong style="color:#22C55E">Tu peux réserver maintenant !</strong>')
+      +'</div>'
+      +'</div>'
+      +'</div>';
+  });
+  el.innerHTML=html;
+}
+function selectDest(i){selectedDestIdx=selectedDestIdx===i?-1:i;buildDestExplorer(_lastTotalFB,_lastMilesMois);}
+
+// ═══════ CHARTS ═══════
+function drawCharts(totalFB,milesMois,milesAF,mrToFB,parrMiles,totalMois,cards,horizon){
+  // Accumulation chart
+  var c1=document.getElementById('chart-accum');if(!c1)return;
+  var ctx=c1.getContext('2d');
+  c1.width=c1.offsetWidth*2;c1.height=400;
+  ctx.clearRect(0,0,c1.width,c1.height);
+  var w=c1.width,h=c1.height,pad=50;
+  var months=horizon*12;
+  var bonusGAF=cards.gaf?25000:0;var bonusPAF=cards.paf?40000:0;
+  var monthlyMR=cards.gam||cards.pam?Math.round(totalMois*0.8):0;
+  var monthlyParr=parrMiles>0?Math.round(parrMiles/months):0;
+  var data=[];var maxVal=0;
+  for(var m=0;m<=months;m++){
+    var af=bonusGAF+bonusPAF+(milesMois*m);
+    var mr=monthlyMR*m;
+    var pa=monthlyParr*m;
+    data.push({af:af,mr:af+mr,total:af+mr+pa});
+    if(af+mr+pa>maxVal)maxVal=af+mr+pa;
+  }
+  maxVal=Math.max(maxVal,1)*1.15;
+  // Grid
+  ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=1;
+  for(var g=0;g<5;g++){
+    var gy=pad+((h-pad*2)/4)*g;
+    ctx.beginPath();ctx.moveTo(pad,gy);ctx.lineTo(w-10,gy);ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,0.25)';ctx.font='18px JetBrains Mono';ctx.textAlign='right';
+    ctx.fillText(fm(Math.round(maxVal-maxVal/4*g)),pad-8,gy+5);
+  }
+  // X axis
+  for(var m=0;m<=months;m+=3){
+    var x=pad+(w-pad-10)/months*m;
+    ctx.fillStyle='rgba(255,255,255,0.2)';ctx.font='16px Inter';ctx.textAlign='center';
+    ctx.fillText('M'+m,x,h-10);
+  }
+  // Draw areas
+  function drawLine(key,color){
+    ctx.beginPath();ctx.strokeStyle=color;ctx.lineWidth=3;
+    data.forEach(function(d,i){
+      var x=pad+(w-pad-10)/months*i;
+      var y=pad+(h-pad*2)*(1-d[key]/maxVal);
+      if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+    });
+    ctx.stroke();
+    // Fill
+    ctx.lineTo(pad+(w-pad-10),h-pad);ctx.lineTo(pad,h-pad);ctx.closePath();
+    ctx.fillStyle=color.replace(')',',0.08)').replace('rgb','rgba');ctx.fill();
+  }
+  drawLine('total','rgb(34,197,94)');
+  drawLine('mr','rgb(167,139,250)');
+  drawLine('af','rgb(30,144,255)');
+
+  // Value comparison chart
+  var c2=document.getElementById('chart-value');if(!c2)return;
+  var ctx2=c2.getContext('2d');
+  c2.width=c2.offsetWidth*2;c2.height=400;
+  ctx2.clearRect(0,0,c2.width,c2.height);
+  var vals=[
+    {label:'Pay w/ Miles',val:totalFB*0.004,color:'#EF4444'},
+    {label:'Economy',val:totalFB*0.015,color:'#F59E0B'},
+    {label:'Business',val:totalFB*0.05,color:'#22C55E'},
+    {label:'Biz Promo',val:totalFB*0.063,color:'#A78BFA'},
+  ];
+  var maxV=Math.max.apply(null,vals.map(function(v){return v.val;}))*1.1||1;
+  var bw=(c2.width-100)/vals.length;
+  vals.forEach(function(v,i){
+    var x=50+i*bw+bw*0.15;
+    var bw2=bw*0.7;
+    var bh=(c2.height-100)*(v.val/maxV);
+    var y=c2.height-50-bh;
+    // Bar
+    ctx2.fillStyle=v.color;
+    ctx2.beginPath();
+    ctx2.roundRect(x,y,bw2,bh,8);
+    ctx2.fill();
+    // Label
+    ctx2.fillStyle='rgba(255,255,255,0.5)';ctx2.font='16px Inter';ctx2.textAlign='center';
+    ctx2.fillText(v.label,x+bw2/2,c2.height-25);
+    // Value
+    ctx2.fillStyle=v.color;ctx2.font='bold 20px JetBrains Mono';
+    ctx2.fillText(fme(v.val),x+bw2/2,y-10);
+  });
+}
+
+// ═══════ BREAK-EVEN ANALYSIS ═══════
+function buildBreakEven(totalMois,totalVols,cards,horizon,milesMois){
+  var el=document.getElementById('be-grid');if(!el)return;
+  var cardsData=[
+    {id:'gaf',name:'Gold Air France',cot:horizon>=2?195*(horizon-1):0,miles:(25000+milesMois*12*horizon)*0.015,avantages:(totalVols*45*horizon)+250*horizon,show:cards.gaf},
+    {id:'gam',name:'Gold Amex',cot:horizon>=2?195*(horizon-1):0,miles:totalMois*12*horizon*0.8*0.015,avantages:250*horizon,show:cards.gam},
+    {id:'paf',name:'Platinum Air France',cot:535*horizon,miles:(65000+milesMois*12*horizon)*0.015,avantages:(totalVols*45*horizon)+(totalVols*30*horizon)+500*horizon,show:cards.paf},
+    {id:'pam',name:'Platinum Amex',cot:horizon>=2?840*(horizon-1):0,miles:(80000*0.8+totalMois*12*horizon)*0.015,avantages:(totalVols*30*horizon)+200*horizon+500*horizon+400*horizon,show:cards.pam},
+  ];
+  var html='';
+  cardsData.forEach(function(c){
+    if(!c.show) return;
+    var totalVal=c.miles+c.avantages;
+    var profit=totalVal-c.cot;
+    var pct=c.cot>0?Math.min(totalVal/c.cot*100,100):100;
+    var profitable=profit>=0;
+    var seuilMois=c.cot>0?Math.ceil(c.cot/((c.miles+c.avantages)/(horizon*12))):0;
+    html+='<div class="be-card '+(profitable?'profitable':'not-yet')+'">'
+      +'<div class="be-name">'+c.name+'</div>'
+      +'<div class="be-row"><span class="be-label">Cotisation totale</span><span class="be-val" style="color:#EF4444">-'+fme(c.cot)+'</span></div>'
+      +'<div class="be-row"><span class="be-label">Valeur miles</span><span class="be-val" style="color:#FFD700">+'+fme(c.miles)+'</span></div>'
+      +'<div class="be-row"><span class="be-label">Avantages (bagages, lounges, assur.)</span><span class="be-val" style="color:#22C55E">+'+fme(c.avantages)+'</span></div>'
+      +'<div class="be-bar-bg"><div class="be-bar-fill" style="width:'+pct+'%;background:'+(profitable?'linear-gradient(90deg,#22C55E,#4ade80)':'linear-gradient(90deg,#F59E0B,#fbbf24)')+'"></div></div>'
+      +'<div class="be-row"><span class="be-label">ROI net</span><span class="be-val" style="color:'+(profitable?'#22C55E':'#F59E0B')+';font-size:16px">'+(profitable?'+':'')+fme(profit)+'</span></div>'
+      +(c.cot>0?'<div class="be-row"><span class="be-label">Seuil de rentabilité</span><span class="be-val" style="color:var(--blue2)">'+(seuilMois<=0?'Immédiat':'Mois '+seuilMois)+'</span></div>':'<div class="be-row"><span class="be-label">Cotisation an 1</span><span class="be-val" style="color:#22C55E">0 € (parrainage)</span></div>')
+      +'</div>';
+  });
+  el.innerHTML=html;
+}
+
+// ═══════ PROFIL VOYAGEUR ═══════
+function buildProfile(totalFB,totalMois,totalVols,milesMois,cards,horizon){
+  var el=document.getElementById('profile-box');if(!el)return;
+  var type,name,desc,color;
+  var annualMiles=milesMois*12;
+  if(totalMois>=3000&&totalVols>=6&&(cards.paf||cards.pam)){
+    type='PREMIUM';name='Globe-Trotter VIP';desc='Tu dépenses beaucoup, tu voyages souvent, et tu as les cartes Platinum. Tu maximises chaque euro en miles et tu profites des lounges, conciergerie et assurances premium.';color='#A78BFA';
+  }else if(totalMois>=1500&&totalVols>=3){
+    type='STANDARD';name='Voyageur Malin';desc='Tu as un bon volume de dépenses et tu voyages régulièrement. Tu accumules des miles rapidement et tu peux te payer un vol long courrier gratuit chaque année.';color='#1E90FF';
+  }else if(totalVols>=2){
+    type='STARTER';name='Voyageur Occasionnel';desc='Tu voyages quelques fois par an. Même avec des dépenses modérées, tu peux accumuler assez pour un vol Europe gratuit et viser le long courrier à 18-24 mois.';color='#22C55E';
+  }else{
+    type='DEBUTANT';name='Futur Voyageur';desc='Tu es au début de ton parcours miles. Chaque dépense compte et les bonus de bienvenue te donnent un boost énorme pour démarrer.';color='#F59E0B';
+  }
+  var volsAccessibles=ALLDEST.filter(function(d){return totalFB>=d.mEco;}).length;
+  var bizAccessibles=ALLDEST.filter(function(d){return d.mBiz&&totalFB>=d.mBiz;}).length;
+  var prochainVol=ALLDEST.filter(function(d){return totalFB<d.mEco;}).sort(function(a,b){return a.mEco-b.mEco;})[0];
+  var moisProchain=prochainVol?Math.ceil((prochainVol.mEco-totalFB)/Math.max(1,milesMois)):0;
+
+  el.innerHTML='<div class="profile-card">'
+    +'<div class="profile-type" style="color:'+color+'">'+twimg('star',14)+' Profil : '+type+'</div>'
+    +'<div class="profile-name">'+name+'</div>'
+    +'<div class="profile-desc">'+desc+'</div>'
+    +'<div class="profile-grid">'
+    +'<div class="profile-stat"><div class="profile-stat-val" style="color:#FFD700">'+fm(totalFB)+'</div><div class="profile-stat-label">Miles total</div></div>'
+    +'<div class="profile-stat"><div class="profile-stat-val" style="color:#22C55E">'+volsAccessibles+'/'+ALLDEST.length+'</div><div class="profile-stat-label">Vols accessibles</div></div>'
+    +'<div class="profile-stat"><div class="profile-stat-val" style="color:#A78BFA">'+bizAccessibles+'</div><div class="profile-stat-label">Business dispo</div></div>'
+    +'<div class="profile-stat"><div class="profile-stat-val" style="color:var(--blue2)">'+fm(annualMiles)+'</div><div class="profile-stat-label">Miles/an</div></div>'
+    +'<div class="profile-stat"><div class="profile-stat-val" style="color:var(--blue2)">'+(annualMiles>0?Math.round(totalFB/annualMiles*12):0)+'</div><div class="profile-stat-label">Mois cumulés</div></div>'
+    +(prochainVol?'<div class="profile-stat"><div class="profile-stat-val" style="color:#F59E0B">'+moisProchain+'</div><div class="profile-stat-label">Mois → '+prochainVol.name+'</div></div>':'<div class="profile-stat"><div class="profile-stat-val" style="color:#22C55E">✓</div><div class="profile-stat-label">Tout accessible</div></div>')
+    +'</div>'
+    +'</div>';
+}
+
+// ═══════ TIMELINE ═══════
+function buildTimeline(milesMois,totalFB,cards,horizon){
+  var el=document.getElementById('timeline-box');if(!el)return;
+  var events=[];
+  var bonusGAF=cards.gaf?25000:0;var bonusPAF=cards.paf?40000:0;
+  var cumul=bonusGAF+bonusPAF;
+  events.push({month:0,label:'Souscription',desc:'Bonus bienvenue : '+fm(bonusGAF+bonusPAF)+' miles'+(cards.pam?' + 80 000 pts MR':''),miles:cumul,color:'#22C55E'});
+  var milestones=[
+    {m:5000,n:'Bordeaux A/R'},{m:10000,n:'Rome A/R'},{m:15000,n:'Marrakech A/R'},
+    {m:18750,n:'New York Promo'},{m:25000,n:'New York A/R'},{m:40000,n:'Bangkok A/R'},
+    {m:45000,n:'Tokyo A/R'},{m:60000,n:'New York Business'},{m:80000,n:'Tokyo Business'},
+  ];
+  var reached={};
+  for(var m=1;m<=horizon*12;m++){
+    cumul+=milesMois;
+    milestones.forEach(function(ms){
+      if(!reached[ms.m]&&cumul>=ms.m){
+        reached[ms.m]=true;
+        events.push({month:m,label:ms.n+' débloqué !',desc:fm(Math.round(cumul))+' miles cumulés',miles:Math.round(cumul),color:ms.m>=60000?'#A78BFA':ms.m>=25000?'#1E90FF':'#22C55E'});
+      }
+    });
+    if(m%6===0&&!events.find(function(e){return e.month===m;})){
+      events.push({month:m,label:'Mois '+m,desc:fm(Math.round(cumul))+' miles · '+fme(Math.round(cumul*0.015))+' (éco) · '+fme(Math.round(cumul*0.05))+' (biz)',miles:Math.round(cumul),color:'rgba(255,255,255,0.3)'});
+    }
+  }
+  var html='';
+  events.slice(0,12).forEach(function(e){
+    html+='<div class="tl-item">'
+      +'<div class="tl-dot" style="border-color:'+e.color+';background:'+e.color+'"></div>'
+      +'<div class="tl-month">Mois '+e.month+'</div>'
+      +'<div class="tl-event">'+e.label+'</div>'
+      +'<div class="tl-miles" style="color:'+e.color+'">'+fm(e.miles)+' miles</div>'
+      +'</div>';
+  });
+  el.innerHTML=html;
+}
+
+// ═══════ TIPS VALUE GRID ═══════
+function buildTipGrid(totalFB,totalVols,cards){
+  var el=document.getElementById('tip-grid');if(!el)return;
+  var tips=[
+    {icon:'🧳',title:'Bagages soute gratuits',text:'Inclus sur chaque vol court/moyen courrier avec Gold AF. Valeur ~45 €/vol.',value:fme(totalVols*45)+'/an',valueColor:'#22C55E',show:cards.gaf},
+    {icon:'🛋️',title:'Accès lounges Priority Pass',text:'Illimité avec Platinum. Repas, boissons, wifi, douches. ~30 €/accès.',value:cards.paf||cards.pam?fme(totalVols*30*2)+'/an':'Platinum requis',valueColor:cards.paf||cards.pam?'#22C55E':'var(--w30)',show:true},
+    {icon:'🛡️',title:'Assurance annulation',text:'Couverture voyage jusqu\'à '+(cards.paf||cards.pam?'10 000':'7 000')+' € sans rien payer de plus.',value:'Jusqu\'à '+fme(cards.paf||cards.pam?10000:7000),valueColor:'#22C55E',show:cards.gaf||cards.paf},
+    {icon:'💳',title:'Paiement 3× sans frais',text:'Sur tous les billets AF/KLM. Étale le coût sans frais supplémentaires.',value:'Inclus',valueColor:'#22C55E',show:cards.gaf},
+    {icon:'🍽️',title:'Crédit dining annuel',text:'200 €/an remboursés dans les restaurants partenaires Amex.',value:cards.pam?'200 €/an':'Platinum Amex requis',valueColor:cards.pam?'#22C55E':'var(--w30)',show:true},
+    {icon:'🏅',title:'Statut Gold Hilton + Marriott',text:'Surclassement, late checkout, points bonus. Sans nuit qualifiante.',value:cards.pam?'~400 €/an':'Platinum Amex requis',valueColor:cards.pam?'#A78BFA':'var(--w30)',show:true},
+    {icon:'👥',title:'Platinum for 2',text:'Partage ton statut Platinum avec un proche. Même avantages, même Priority Pass.',value:cards.paf?'1 proche inclus':'Platinum AF requis',valueColor:cards.paf?'#22C55E':'var(--w30)',show:true},
+    {icon:'📞',title:'Conciergerie 24h/24',text:'Réservations, recherche, organisation voyage. Disponible jour et nuit.',value:cards.paf||cards.pam?'Inclus':'Platinum requis',valueColor:cards.paf||cards.pam?'#22C55E':'var(--w30)',show:true},
+  ];
+  var html='';
+  tips.forEach(function(t){
+    if(!t.show)return;
+    html+='<div class="tip-card">'
+      +'<div class="tip-icon">'+t.icon+'</div>'
+      +'<div class="tip-title">'+t.title+'</div>'
+      +'<div class="tip-text">'+t.text+'</div>'
+      +'<div class="tip-value" style="color:'+t.valueColor+'">'+t.value+'</div>'
+      +'</div>';
+  });
+  el.innerHTML=html;
+}
+
+// ═══════ DESTINATION VALUE SIMULATOR ═══════
+function populateValSelect(){
+  var sel=document.getElementById('val-dest-select');if(!sel)return;
+  sel.innerHTML='<option value="-1">Choisis une destination...</option>';
+  ALLDEST.forEach(function(d,i){
+    sel.innerHTML+='<option value="'+i+'">'+d.name+' — '+d.route+'</option>';
+  });
+}
+function updateValSim(){
+  var sel=document.getElementById('val-dest-select');
+  var box=document.getElementById('val-sim-result');
+  if(!sel||!box)return;
+  var idx=parseInt(sel.value);
+  if(idx<0){box.innerHTML='';return;}
+  var d=ALLDEST[idx];
+  var totalFB=_lastTotalFB;
+  var canEco=totalFB>=d.mEco;
+  var canBiz=d.mBiz&&totalFB>=d.mBiz;
+  var canPromo=d.promo&&totalFB>=d.promo;
+  var moEco=canEco?0:Math.ceil((d.mEco-totalFB)/Math.max(1,_lastMilesMois));
+  var moBiz=d.mBiz?(canBiz?0:Math.ceil((d.mBiz-totalFB)/Math.max(1,_lastMilesMois))):99;
+  var h='<div style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap">'
+    +'<img src="'+d.img+'" style="width:120px;height:80px;object-fit:cover;border-radius:10px;flex-shrink:0" loading="lazy">'
+    +'<div style="flex:1;min-width:200px">'
+    +'<div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:4px">'+twimg(d.flag,18)+' '+d.name+'</div>'
+    +'<div style="font-size:11px;color:var(--w30);margin-bottom:10px">'+d.route+'</div>'
+    +'</div></div>'
+    +'<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px">'
+    // Economy
+    +'<div style="background:rgba(0,0,0,.2);border-radius:10px;padding:12px;border:1px solid '+(canEco?'rgba(34,197,94,.3)':'rgba(255,255,255,.06)')+'">'
+    +'<div style="font-size:10px;color:var(--w30);text-transform:uppercase;margin-bottom:4px">Economy</div>'
+    +'<div style="font-family:JetBrains Mono,monospace;font-size:16px;font-weight:700;color:'+(canEco?'#FFD700':'var(--w30)')+'">'+fm(d.mEco)+' miles</div>'
+    +'<div style="font-size:11px;color:var(--w60);margin-top:2px">Cash : '+fme(d.pEco)+'</div>'
+    +'<div style="font-size:11px;color:'+(canEco?'#22C55E':'#F59E0B')+';margin-top:4px;font-weight:600">'+(canEco?'✓ Accessible · '+fme(d.pEco)+' économisés':'~'+moEco+' mois · manque '+fm(d.mEco-totalFB)+' miles')+'</div>'
+    +'<div style="font-size:10px;color:var(--w30);margin-top:3px">Valeur/mile : '+(d.pEco/d.mEco).toFixed(3)+' €</div>'
+    +'</div>';
+  if(d.mBiz){
+    h+='<div style="background:rgba(0,0,0,.2);border-radius:10px;padding:12px;border:1px solid '+(canBiz?'rgba(167,139,250,.3)':'rgba(255,255,255,.06)')+'">'
+    +'<div style="font-size:10px;color:var(--w30);text-transform:uppercase;margin-bottom:4px">Business</div>'
+    +'<div style="font-family:JetBrains Mono,monospace;font-size:16px;font-weight:700;color:'+(canBiz?'#A78BFA':'var(--w30)')+'">'+fm(d.mBiz)+' miles</div>'
+    +'<div style="font-size:11px;color:var(--w60);margin-top:2px">Cash : '+fme(d.pBiz)+'</div>'
+    +'<div style="font-size:11px;color:'+(canBiz?'#22C55E':'#F59E0B')+';margin-top:4px;font-weight:600">'+(canBiz?'✓ Business ! · '+fme(d.pBiz)+' économisés':'~'+moBiz+' mois · manque '+fm(d.mBiz-totalFB)+' miles')+'</div>'
+    +'<div style="font-size:10px;color:var(--w30);margin-top:3px">Valeur/mile : '+(d.pBiz/d.mBiz).toFixed(3)+' € · x'+Math.round(d.pBiz/d.mBiz/0.004)+' vs cashback</div>'
+    +'</div>';
+  }
+  if(d.promo){
+    h+='<div style="background:rgba(255,215,0,.05);border-radius:10px;padding:12px;border:1px solid rgba(255,215,0,.15);grid-column:1/-1">'
+    +'<div style="font-size:10px;color:#FFD700;text-transform:uppercase;margin-bottom:4px">'+twimg('fire',12)+' Promo Rewards (-25%)</div>'
+    +'<div style="font-family:JetBrains Mono,monospace;font-size:16px;font-weight:700;color:#FFD700">'+fm(d.promo)+' miles</div>'
+    +'<div style="font-size:11px;color:var(--w60);margin-top:2px">Économise '+fm(d.mEco-d.promo)+' miles · Valeur/mile : '+(d.pEco/d.promo).toFixed(3)+' €</div>'
+    +'<div style="font-size:11px;color:'+(canPromo?'#22C55E':'#F59E0B')+';margin-top:4px;font-weight:600">'+(canPromo?'✓ Accessible en promo !':'Dès le 1er du mois si suffisamment de miles')+'</div>'
+    +'</div>';
+  }
+  h+='</div>';
+  box.innerHTML=h;
+  if(window.twemoji)twemoji.parse(box,{folder:'svg',ext:'.svg',base:'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/'});
+}
+
+// ═══════ HOOK INTO CALC ═══════
+var _origCalcEnd=false;
+function postCalcDashboard(totalFB,milesMois,milesAF,mrToFB,parrMiles,totalMois,cards,horizon,totalVols){
+  _lastTotalFB=totalFB;_lastMilesMois=milesMois;_lastTotalMois=totalMois;_lastCards=cards;_lastH=horizon;_lastTotalVols=totalVols;
+  buildDestExplorer(totalFB,milesMois);
+  setTimeout(function(){drawCharts(totalFB,milesMois,milesAF,mrToFB,parrMiles,totalMois,cards,horizon);},200);
+  buildBreakEven(totalMois,totalVols,cards,horizon,milesMois);
+  buildProfile(totalFB,totalMois,totalVols,milesMois,cards,horizon);
+  buildTimeline(milesMois,totalFB,cards,horizon);
+  buildTipGrid(totalFB,totalVols,cards);
+  populateValSelect();
+}
 
 // Parse all emoji to Twemoji images
 if(window.twemoji){twemoji.parse(document.body,{folder:'svg',ext:'.svg',base:'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/'});}
