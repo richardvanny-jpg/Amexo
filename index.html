@@ -970,7 +970,7 @@ function calc(){
   var bonusTotal=(S.gaf?25000:0)+(S.paf?40000:0);
   var mrConvTotal=gamToFB+pamToFB;
   var msgs=[
-    'Avec '+fme(totalMois)+'/mois tu generes '+fm(milesAn)+' miles/an de tes depenses'+(bonusTotal>0?' + '+fm(bonusTotal)+' miles bonus cartes':'')+(mrConvTotal>0?' + '+fm(mrConvTotal)+' miles MR convertis':'')+'. Total : '+fm(totalFB)+' miles Flying Blue en '+H+' an'+(H>1?'s':'')+'  !',
+    'Avec '+fme(totalMois)+'/mois tu generes '+fm(milesAn)+' miles/an de tes depenses'+(bonusTotal>0?' + '+fm(bonusTotal)+' miles bonus cartes':'')+(mrConvTotal>0?' + '+fm(mrConvTotal)+' miles MR convertis':'')+'. Total : '+fm(totalFB)+' miles en '+H+' an'+(H>1?'s':'')+'  !',
     fm(totalFB)+' miles = '+Math.floor(totalFB/25000)+' vol(s) New York A/R'+(totalFB%25000>0?' + '+fm(totalFB%25000)+' miles en reserve':'')+'.',
     'Souscrire AVANT le 8 juin = 25 000 miles offerts. Apres cette date : possiblement moitie moins.'
   ];
@@ -1209,36 +1209,82 @@ function buildVerdict(totalMois,totalFB,milesMois,milesAF,gamToFB,pamToFB,parrFB
   if(profileType==='STARTER'){
     vtxt='Commence avec <strong>'+fm(totalFB)+' miles</strong> (~<strong>'+fme(valEstim)+'</strong>).'+convNote+parrNote+roiNote
       +' Choisis au moins une carte pour debloquer ta simulation complete.';
-    vsteps=['Selectionner une carte en haut pour demarrer','Gold AF recommandee : 0 euro an 1 + 25 000 miles offerts','Gold Amex : 0 euro an 1 + points MR flexibles'];
-  } else if(!hasPlatAF&&!hasPlatAmex){
-    // Gold(s) seulement
-    var cardStr=cardNames.join(' + ');
-    vtxt='Avec <strong>'+cardStr+'</strong> et <strong>'+fm(totalFB)+' miles</strong> = <strong>'+fme(valEstim)+'</strong>.'+convNote+parrNote+roiNote
-      +(totalFB>=18750?' Tu peux t\'offrir New York en promo des maintenant.':totalFB>=15000?' Marrakech accessible maintenant.':' Continue d\'accumuler, New York dans ~'+Math.ceil((25000-totalFB)/Math.max(1,milesMois))+' mois.')
-      +' L\'upgrade Platinum AF (+40 000 miles) sera pertinent quand tu prends 4+ vols/an.';
     vsteps=[
-      'Souscrire '+cardStr+' AVANT le 8 juin (0 euro les deux)',
-      'Valider la condition de depense dans les 3 premiers mois',
-      (fromMR===0?'Activer la conversion MR vers Flying Blue (ratio 5:4)':'Guetter les bonus transfert MR +25% — fenetres de quelques jours'),
-      'Reserver en Promo Rewards le 1er du mois (+33% de valeur)',
-      'Evaluer upgrade Platinum AF a 12 mois (+40 000 miles bonus)',
-      'Activer Uber + Accor + portail shopping Flying Blue',
+      'Souscrire Gold Air France via parrainage (0 euro an 1 + 25 000 miles offerts)',
+      'Souscrire Gold Amex via parrainage (0 euro an 1 + points MR flexibles)',
+      'Upgrader Gold AF vers Platinum AF dans la foulee → +40 000 miles bonus',
+      'Upgrader Gold Amex vers Platinum Amex → +80 000 pts MR bonus (= 64 000 miles)',
+      'Profiter de tous les bonus puis evaluer le downgrade selon la rentabilite',
+    ];
+  } else if(!hasPlatAF&&!hasPlatAmex){
+    var cardStr=cardNames.join(' + ');
+    // Calculer si l'upgrade Plat vaut le coup
+    var upgradeCostAF=535; // cotisation Plat AF
+    var upgradeGainAF=40000*0.015+totalVols*30+250; // miles val + lounges + assur
+    var upgradeCostAmex=840;
+    var upgradeGainAmex=80000*0.8*0.015+totalVols*30+200+400+250; // miles + lounges + dining + hotels + assur
+    var afWorth=upgradeGainAF>upgradeCostAF;
+    var amexWorth=upgradeGainAmex>upgradeCostAmex;
+
+    vtxt='Avec <strong>'+cardStr+'</strong> et <strong>'+fm(totalFB)+' miles</strong> = <strong>'+fme(valEstim)+'</strong>.'+convNote+parrNote+roiNote
+      +'<br><br><strong style="color:#fff">'+twimg('rocket')+' Strategie recommandee :</strong> Souscris les 2 cartes Gold (0 euro), puis <strong style="color:#FFD700">upgrade les deux vers Platinum</strong> pour cumuler tous les bonus de bienvenue. Ensuite, analyse la rentabilite pour decider si tu gardes ou tu downgrade.'
+      +'<br><br><strong style="color:#fff">Analyse upgrade Platinum AF :</strong>'
+      +'<br>→ Cout : '+fme(upgradeCostAF)+'/an'
+      +'<br>→ Ce que tu recois : +40 000 miles ('+fme(Math.round(40000*0.015))+' en eco, '+fme(Math.round(40000*0.05))+' en biz) + Priority Pass + assurance 10k euro'
+      +'<br>→ Valeur estimee des avantages : <strong style="color:'+(afWorth?'#22C55E':'#F59E0B')+'">'+fme(Math.round(upgradeGainAF))+'</strong> → '+(afWorth?'<strong style="color:#22C55E">RENTABLE</strong> — garde le Platinum':'<strong style="color:#F59E0B">PAS RENTABLE sur la duree</strong> — upgrade pour le bonus puis downgrade avant le renouvellement')
+      +'<br><br><strong style="color:#fff">Analyse upgrade Platinum Amex :</strong>'
+      +'<br>→ Cout : '+fme(upgradeCostAmex)+'/an (0 euro an 1 via parrainage)'
+      +'<br>→ Ce que tu recois : +80 000 pts MR (= 64 000 miles = '+fme(Math.round(64000*0.05))+' en biz) + Priority Pass + 200 euro dining + statut Gold Hilton/Marriott'
+      +'<br>→ Valeur estimee des avantages : <strong style="color:'+(amexWorth?'#22C55E':'#F59E0B')+'">'+fme(Math.round(upgradeGainAmex))+'</strong> → '+(amexWorth?'<strong style="color:#22C55E">RENTABLE</strong> — garde le Platinum':'<strong style="color:#F59E0B">Upgrade pour le bonus an 1 (0 euro)</strong> puis downgrade vers Gold avant le renouvellement an 2');
+    vsteps=[
+      'MAINTENANT : Souscrire Gold AF + Gold Amex (0 euro les deux via parrainage — avant le 8 juin)',
+      'SEMAINE 1 : Upgrader Gold AF vers Platinum AF → cumul 25k + 40k = 65 000 miles bonus',
+      'SEMAINE 1 : Upgrader Gold Amex vers Platinum Amex → +80 000 pts MR bonus (= 64 000 miles FB)',
+      'MOIS 1-3 : Valider les conditions de depense pour debloquer tous les bonus',
+      'MOIS 3 : Convertir les points MR vers Flying Blue (ratio 5:4) — ou attendre un bonus transfert +25%',
+      'MOIS 6 : Activer tous les partenaires (Uber, Accor, Booking, portail shopping FB)',
+      'MOIS 10 : Evaluer la rentabilite de chaque Platinum — '+(afWorth?'Platinum AF : GARDER (rentable avec '+totalVols+' vols/an)':'Platinum AF : DOWNGRADE vers Gold si moins de 4 vols/an'),
+      'MOIS 10 : '+(amexWorth?'Platinum Amex : GARDER (rentable avec tes depenses)':'Platinum Amex : DOWNGRADE vers Gold avant la date anniversaire (an 2 = '+fme(840)+')'),
+      'TOUJOURS : Ne jamais resilier — downgrader. Tu conserves ton historique, tes miles et ton anciennete',
+      'CHAQUE MOIS : Guetter les Promo Rewards FB le 1er du mois (jusqu\'a -50% en miles)',
     ];
   } else {
-    // Au moins 1 Platinum
     var topCard=hasPlatAmex?'Platinum Amex':'Platinum AF';
+    // Calculer rentabilite pour chaque Plat selectionnee
+    var platAFcost=535;var platAFval=(40000*0.015)+(totalVols*30)+250+(totalVols*45);
+    var platAMcost=840;var platAMval=(80000*0.8*0.015)+(totalVols*30)+200+400+250;
+    var keepAF=hasPlatAF&&platAFval>platAFcost;
+    var keepAM=hasPlatAmex&&(horizon<=1||platAMval>platAMcost);
+
     vtxt='Profil <strong>'+cardNames.join(' + ')+'</strong> — <strong>'+fm(totalFB)+' miles</strong> = <strong>'+fme(valEstim)+'</strong>.'+convNote+parrNote+roiNote
-      +(totalFB>=60000?' La Business Class New York est dans ta portee.':totalFB>=40000?' L\'upgrade Business long courrier est accessible.':' Continue d\'accumuler — Business Class dans ~'+Math.ceil((60000-totalFB)/Math.max(1,milesMois))+' mois.')
-      +' Avec '+topCard+', chaque euro depense optimise ton solde de miles et tes droits lounges.';
+      +(totalFB>=60000?' <strong style="color:#A78BFA">La Business Class New York est dans ta portee !</strong>':totalFB>=40000?' L\'upgrade Business long courrier est accessible.':' Continue d\'accumuler — Business Class dans ~'+Math.ceil((60000-totalFB)/Math.max(1,milesMois))+' mois.')
+      +'<br><br><strong style="color:#fff">'+twimg('chart')+' Analyse de rentabilite :</strong>';
+
+    if(hasPlatAF){
+      vtxt+='<br><br>'+twimg('plane')+' <strong>Platinum AF ('+fme(platAFcost)+'/an) :</strong>'
+        +'<br>→ Valeur avantages : '+fme(Math.round(platAFval))+' (miles bonus + lounges + bagages + assurance)'
+        +'<br>→ <strong style="color:'+(keepAF?'#22C55E':'#F59E0B')+'">'+(keepAF?'RENTABLE — garde la carte. Tu generes '+fme(Math.round(platAFval-platAFcost))+' de profit net.':'PAS RENTABLE a long terme avec '+totalVols+' vols/an. Downgrade vers Gold AF avant le renouvellement an 2.')+'</strong>';
+    }
+    if(hasPlatAmex){
+      vtxt+='<br><br>'+twimg('card')+' <strong>Platinum Amex ('+fme(platAMcost)+'/an, 0 euro an 1) :</strong>'
+        +'<br>→ Valeur avantages : '+fme(Math.round(platAMval))+' (64k miles + lounges + dining 200 euro + statut hotels)'
+        +'<br>→ <strong style="color:'+(keepAM?'#22C55E':'#F59E0B')+'">'+(keepAM?'RENTABLE — les avantages depassent la cotisation de '+fme(Math.round(platAMval-platAMcost))+'.':'An 1 = gratuit donc TOUJOURS upgrade. An 2+ : downgrade vers Gold Amex si depenses < 3 500 euro/mois.')+'</strong>';
+    }
+
     vsteps=[
-      'Souscrire Gold AF + Gold Amex MAINTENANT (0 euro — avant le 8 juin)',
-      'Upgrader vers Platinum AF AVANT le 8 juin — 25k + 40k = 65k miles bonus',
-      hasPlatAmex?'Upgrader Platinum Amex — 80k pts MR bonus = 64k miles':'Evaluer Platinum Amex si depenses > 3 500 euro/mois',
-      fromMR>0?'Continuer conversion MR vers Flying Blue en periode bonus (+25%)':'Activer conversion points MR vers Flying Blue (ratio 5:4)',
-      'Viser Business Class sur long courrier — max valeur par mile',
-      'Guetter Promo Rewards le 1er du mois (jusqu\'a -50% en miles)',
-      totalMois>=4000?'Evaluer downgrade Plat AF vers Gold AF si moins de 4 vols/an a 24 mois':'Activer Uber + Accor + Booking + portail shopping Flying Blue',
+      (!hasGoldAF&&!hasPlatAF?'Souscrire Gold AF (0 euro) — avant le 8 juin':'Gold AF active — bonus 25 000 miles acquis'),
+      (!hasGoldAmex&&!hasPlatAmex?'Souscrire Gold Amex (0 euro) — avant le 8 juin':'Gold Amex active — points MR en accumulation'),
+      hasPlatAF?'Platinum AF active — 65 000 miles bonus cumules':'Upgrader vers Platinum AF IMMEDIATEMENT → +40 000 miles bonus',
+      hasPlatAmex?'Platinum Amex active — 80 000 pts MR (64k miles) en cours':'Upgrader vers Platinum Amex (0 euro an 1) → +80 000 pts MR',
+      'Convertir les points MR vers Flying Blue — ratio 5:4'+(fromMR>0?' (deja fait : +'+fm(fromMR)+' miles)':' — ou attendre bonus +25%'),
+      'Viser les vols Business long courrier — c\'est la que tes miles valent le plus (0,05 a 0,084 euro/mile)',
+      'Guetter les Promo Rewards le 1er du mois — jusqu\'a -50% en miles',
     ];
+
+    // Ajouter recommandation downgrade si pas rentable
+    if(hasPlatAF&&!keepAF) vsteps.push('MOIS 10 : Downgrade Platinum AF vers Gold AF — tu gardes les miles acquis et les avantages Gold');
+    if(hasPlatAmex&&!keepAM&&horizon>=2) vsteps.push('MOIS 10 : Downgrade Platinum Amex vers Gold Amex — avant la date anniversaire (eviter '+fme(840)+')');
+    vsteps.push('JAMAIS resilier — toujours downgrader. Tu conserves anciennete, historique et miles');
   }
 
   var stepsHtml=vsteps.map(function(s,i){
