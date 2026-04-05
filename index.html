@@ -345,11 +345,11 @@ footer{padding:24px 0;text-align:center;border-top:1px solid var(--border);margi
 <div class="section">
   <div class="sh"><div class="sn">1</div><span class="st">Tes dépenses mensuelles</span><span class="stip">Tout ce que tu peux payer par carte</span></div>
   <div class="g2">
-    <div class="field"><label>🛒 Courses & supermarché</label><input type="number" id="f-courses" value="400" min="0" step="10"><div class="field-note">0,5 mile/€ (barème 2026)</div></div>
-    <div class="field"><label>🍽️ Restos & sorties</label><input type="number" id="f-restos" value="200" min="0" step="10"><div class="field-note">0,5 mile/€</div></div>
-    <div class="field"><label>⛽ Carburant & transport</label><input type="number" id="f-transport" value="150" min="0" step="10"><div class="field-note">0,5 mile/€</div></div>
-    <div class="field"><label>🛍️ Shopping & divers</label><input type="number" id="f-shopping" value="200" min="0" step="10"><div class="field-note">0,5 mile/€</div></div>
-    <div class="field"><label>📱 Abonnements</label><input type="number" id="f-abos" value="100" min="0" step="10"><div class="field-note">0,5 mile/€</div></div>
+    <div class="field"><label>🛒 Courses & supermarché</label><input type="number" id="f-courses" value="400" min="0" step="10"><div class="field-note">1 mile/€ (Gold AF)</div></div>
+    <div class="field"><label>🍽️ Restos & sorties</label><input type="number" id="f-restos" value="200" min="0" step="10"><div class="field-note">1 mile/€</div></div>
+    <div class="field"><label>⛽ Carburant & transport</label><input type="number" id="f-transport" value="150" min="0" step="10"><div class="field-note">1 mile/€</div></div>
+    <div class="field"><label>🛍️ Shopping & divers</label><input type="number" id="f-shopping" value="200" min="0" step="10"><div class="field-note">1 mile/€</div></div>
+    <div class="field"><label>📱 Abonnements</label><input type="number" id="f-abos" value="100" min="0" step="10"><div class="field-note">1 mile/€</div></div>
     <div class="field"><label>🏨 Hôtels Accor (double cumul)</label><input type="number" id="f-hotels" value="0" min="0" step="10"><div class="field-note">1 mile/€ partenaire + pts Accor</div></div>
     <div class="field"><label>🚗 Uber (×2 si 4+ courses/mois)</label><input type="number" id="f-uber" value="0" min="0" step="10"><div class="field-note">Jusqu'à 2 miles/€</div></div>
     <div class="field"><label>✈️ Achats directs AF/KLM</label><input type="number" id="f-af" value="0" min="0" step="10"><div class="field-note">1 mile/€ partenaire</div></div>
@@ -380,7 +380,7 @@ footer{padding:24px 0;text-align:center;border-top:1px solid var(--border);margi
     <div class="ct on" id="t-gaf" onclick="tog('gaf')">
       <span class="ct-tag tf">0€ an 1</span>
       <div class="ct-name">Gold Air France</div>
-      <div class="ct-bonus">+25 000 miles · 0,5–1 mile/€</div>
+      <div class="ct-bonus">+25 000 miles · 1 mile/€</div>
       <div class="ck">✓</div>
     </div>
     <div class="ct on" id="t-gam" onclick="tog('gam')">
@@ -486,7 +486,7 @@ footer{padding:24px 0;text-align:center;border-top:1px solid var(--border);margi
     <div class="rcard">
       <div class="rch"><span class="rct">Amex Gold Air France</span><span class="rbg" style="background:rgba(34,197,94,.15);color:#22C55E">0 € an 1</span></div>
       <div class="rrow highlight"><span class="rl">🎁 Bonus bienvenue parrainage</span><span class="rv g">+25 000 miles</span></div>
-      <div class="rrow"><span class="rl">Miles dépenses quotidiennes (0,5/€)</span><span class="rv b" id="gaf-base">—</span></div>
+      <div class="rrow"><span class="rl">Miles dépenses quotidiennes (1/€)</span><span class="rv b" id="gaf-base">—</span></div>
       <div class="rrow"><span class="rl">Miles partenaire Accor (1/€)</span><span class="rv b" id="gaf-hotel">—</span></div>
       <div class="rrow"><span class="rl">Miles Uber (jusqu'à 2/€)</span><span class="rv b" id="gaf-uber">—</span></div>
       <div class="rrow"><span class="rl">Miles achats AF/KLM directs (1/€)</span><span class="rv b" id="gaf-af">—</span></div>
@@ -789,9 +789,12 @@ function calc(){
   var baseM=courses+restos+transport+shopping+abos;
   var totalMois=baseM+hotels+uber+afDirect;
 
-  // Miles mensuels cartes AF
-  var milesMois=(baseM*0.5)+(hotels*1.0)+(uber*2.0)+(afDirect*1.0);
-  var milesVols=(vcourt*500+vmoyen*2000+vlong*5000)*H;
+  // Miles mensuels cartes AF — seulement si Gold AF ou Plat AF cochée
+  var milesMois=0;
+  if(S.gaf||S.paf){
+    milesMois=(baseM*1.0)+(hotels*1.0)+(uber*2.0)+(afDirect*1.0);
+  }
+  var milesVols=(S.gaf||S.paf)?((vcourt*500+vmoyen*2000+vlong*5000)*H):0;
   var milesCumul=(milesMois*12*H)+milesVols;
 
   // Bonus cartes AF
@@ -799,8 +802,8 @@ function calc(){
   var bonusPAF=S.paf?40000:0;
   var milesAF=milesCumul+bonusGAF+bonusPAF;
 
-  // Points MR
-  var ptsMensuel=totalMois;
+  // Points MR — seulement si Gold Amex ou Plat Amex cochée
+  var ptsMensuel=(S.gam||S.pam)?totalMois:0;
   var ptsCumul=ptsMensuel*12*H;
   var gamPtsCumul=S.gam?ptsCumul:0;
   var pamPtsCumul=S.pam?(ptsCumul+80000):0;
@@ -849,7 +852,7 @@ function calc(){
 
   // HEADER
   document.getElementById('r-dep').textContent=fme(totalMois);
-  document.getElementById('r-mm').textContent=fm(milesMois);
+  document.getElementById('r-mm').textContent=(S.gaf||S.paf)?fm(milesMois)+' miles/mois':'Aucune carte AF';
   var totLabel=fm(totalFB);
   if(totalOther>0) totLabel+='+'+fm(totalOther)+' '+gamProg.name;
   document.getElementById('r-tot').textContent=totLabel;
@@ -864,7 +867,7 @@ function calc(){
 
   // GOLD AF
   if(S.gaf){
-    document.getElementById('gaf-base').textContent=fm(baseM*0.5*12*H)+' miles';
+    document.getElementById('gaf-base').textContent=fm(baseM*1.0*12*H)+' miles';
     document.getElementById('gaf-hotel').textContent=fm(hotels*1.0*12*H)+' miles';
     document.getElementById('gaf-uber').textContent=fm(uber*2.0*12*H)+' miles';
     document.getElementById('gaf-af').textContent=fm(afDirect*1.0*12*H)+' miles';
@@ -966,11 +969,12 @@ function calc(){
   buildVerdict(totalMois,totalFB,milesMois,milesAF,gamToFB,pamToFB,parrMiles+parrPtsConv,totalOther,valTotal,S,H,vcourt+vmoyen+vlong,milesCumul,ptsRestantsCalc);
 
   // Speech bubble
-  var milesAn=milesMois*12;
+  var milesAnAF=(S.gaf||S.paf)?milesMois*12:0;
+  var ptsMRAn=(S.gam||S.pam)?totalMois*12:0;
   var bonusTotal=(S.gaf?25000:0)+(S.paf?40000:0);
   var mrConvTotal=gamToFB+pamToFB;
   var msgs=[
-    'Avec '+fme(totalMois)+'/mois tu generes '+fm(milesAn)+' miles/an de tes depenses'+(bonusTotal>0?' + '+fm(bonusTotal)+' miles bonus cartes':'')+(mrConvTotal>0?' + '+fm(mrConvTotal)+' miles MR convertis':'')+'. Total : '+fm(totalFB)+' miles en '+H+' an'+(H>1?'s':'')+'  !',
+    'Avec '+fme(totalMois)+'/mois :'+(milesAnAF>0?' '+fm(milesAnAF)+' miles AF/an':'')+(ptsMRAn>0?' + '+fm(ptsMRAn)+' pts MR/an':'')+(bonusTotal>0?' + '+fm(bonusTotal)+' bonus':'')+'.'+(mrConvTotal>0?' MR convertis : +'+fm(mrConvTotal)+' miles.':'')+' Total : '+fm(totalFB)+' miles FB !',
     fm(totalFB)+' miles = '+Math.floor(totalFB/25000)+' vol(s) New York A/R'+(totalFB%25000>0?' + '+fm(totalFB%25000)+' miles en reserve':'')+'.',
     'Souscrire AVANT le 8 juin = 25 000 miles offerts. Apres cette date : possiblement moitie moins.'
   ];
